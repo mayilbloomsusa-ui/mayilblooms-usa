@@ -1445,7 +1445,8 @@
       <!-- Logo or placeholder injected by JS -->
     </a>
     <ul class="navbar-links">
-      <li><a href="#products">Products</a></li>
+      <li><a href="#flowers">Flowers</a></li>
+      <li><a href="#crafts">Crafts</a></li>
       <li><a href="#why-us">Why Us</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
@@ -1499,17 +1500,8 @@
   </div>
   <div class="section-divider"></div>
 
-  <!-- Products Section -->
   <section class="section" id="products">
-    <div class="section-header">
-      <span class="section-badge">Our Collection</span>
-      <h2 class="section-title">Premium Artificial Flowers</h2>
-      <div class="divider"></div>
-      <p class="section-subtitle">Beautiful, long-lasting products for every occasion</p>
-    </div>
-    <div class="product-grid" id="productGrid">
-      <!-- Cards injected by JS -->
-    </div>
+    <!-- Categories and Grids injected by JS -->
   </section>
 
   <div class="section-divider"></div>
@@ -1591,8 +1583,11 @@
 
       // ─── Utility: Parse product filename ───────────────────
       function cleanProductName(filename) {
+        // Strip out folder prefix if it exists (e.g., "flowers/my-flower.jpg" -> "my-flower.jpg")
+        let name = filename.includes('/') ? filename.split('/').pop() : filename;
+
         // Remove extension
-        let name = filename.replace(/\.[^.]+$/, '');
+        name = name.replace(/\.[^.]+$/, '');
         // Split at $ if exists
         const dollarIndex = name.lastIndexOf('$');
         if (dollarIndex !== -1) name = name.substring(0, dollarIndex);
@@ -1761,99 +1756,110 @@
       // ─── Build Products ────────────────────────────────────
       function buildProducts() {
         const cfg = catalogConfig;
-        const grid = document.getElementById('productGrid');
-        const productFilenames = cfg.products || [];
+        const mainContainer = document.getElementById('products');
         const flatDiscount = cfg.flatDiscount || 0;
 
-        const groups = {};
-        productFilenames.forEach(fn => {
-          const name = cleanProductName(fn);
-          if (!groups[name]) groups[name] = { name, images: [], prices: [], rawFilenames: [] };
-          groups[name].images.push((cfg.imagesFolder || 'images') + '/' + fn);
-          groups[name].rawFilenames.push(fn);
-          const price = parsePrice(fn);
-          if (price !== null) groups[name].prices.push(price);
-        });
+        mainContainer.innerHTML = '';
 
-        const productEntries = Object.values(groups);
-        document.getElementById('statProducts').textContent = productEntries.length + '+';
+        const categories = cfg.categories || [{ name: "Our Collection", id: "all", products: cfg.products || [] }];
+        let totalProductsCount = 0;
 
-        if (productEntries.length === 0) {
-          grid.innerHTML = `<div class="empty-state" style="grid-column: 1 / -1;">...</div>`;
-          return;
-        }
+        categories.forEach((cat, catIdx) => {
+          const groups = {};
+          cat.products.forEach(fn => {
+            const name = cleanProductName(fn);
+            if (!groups[name]) groups[name] = { name, images: [], prices: [], rawFilenames: [] };
+            groups[name].images.push((cfg.imagesFolder || 'images') + '/' + fn);
+            groups[name].rawFilenames.push(fn);
+            const price = parsePrice(fn);
+            if (price !== null) groups[name].prices.push(price);
+          });
 
-        productEntries.forEach((group, index) => {
-          // finalPrice comes from filename (it is the discounted price)
-          const finalPrice = group.prices.length > 0 ? Math.min(...group.prices) : 0;
+          const productEntries = Object.values(groups);
+          totalProductsCount += productEntries.length;
 
-          // Calculate originalPrice based on finalPrice and flatDiscount as a percentage
-          // Formula: Original = Final / (1 - (Discount/100))
-          let originalPrice = 0;
-          if (flatDiscount > 0 && flatDiscount < 100) {
-            originalPrice = Math.ceil(finalPrice / (1 - (flatDiscount / 100)));
-          } else {
-            originalPrice = finalPrice;
+          const header = document.createElement('div');
+          header.className = 'section-header';
+          header.id = cat.id; // Allow jumping to section via #id
+          if (catIdx > 0) header.style.marginTop = '100px';
+          header.innerHTML = `
+            <span class="section-badge">${catIdx === 0 ? 'Featured' : 'Collection'}</span>
+            <h2 class="section-title">${cat.name}</h2>
+            <div class="divider"></div>
+            ${catIdx === 0 ? '<p class="section-subtitle">Premium handcrafted artificial flowers and crafts</p>' : ''}
+          `;
+          mainContainer.appendChild(header);
+
+          const grid = document.createElement('div');
+          grid.className = 'product-grid';
+          mainContainer.appendChild(grid);
+
+          if (productEntries.length === 0) {
+            grid.innerHTML = `<div class="empty-state" style="grid-column: 1 / -1;">No items found in this category.</div>`;
+            return;
           }
 
-          const discountPercent = flatDiscount;
+          productEntries.forEach((group, index) => {
+            const finalPrice = group.prices.length > 0 ? Math.min(...group.prices) : 0;
+            let originalPrice = (flatDiscount > 0 && flatDiscount < 100)
+              ? Math.ceil(finalPrice / (1 - (flatDiscount / 100)))
+              : finalPrice;
 
-          const card = document.createElement('div');
-          card.className = 'product-card';
-          card.style.transitionDelay = `${index * 0.08}s`;
+            const card = document.createElement('div');
+            card.className = 'product-card';
 
-          let sliderHTML = '';
-          if (group.images.length > 1) {
-            sliderHTML = `
-              <div class="card-slider" id="slider-${index}">
-                ${group.images.map(img => `<div class="card-slide"><img src="${img}" alt="${group.name}"></div>`).join('')}
+            let sliderHTML = '';
+            if (group.images.length > 1) {
+              sliderHTML = `
+                <div class="card-slider" id="slider-${catIdx}-${index}">
+                  ${group.images.map(img => `<div class="card-slide"><img src="${img}" alt="${group.name}"></div>`).join('')}
+                </div>
+                <div class="slider-dots">
+                  ${group.images.map((_, i) => `<div class="slider-dot ${i === 0 ? 'active' : ''}"></div>`).join('')}
+                </div>
+              `;
+            } else {
+              sliderHTML = `<div class="product-image-wrapper"><img src="${group.images[0]}" alt="${group.name}"></div>`;
+            }
+
+            let variationTag = 'Premium Quality';
+            const allRaws = group.rawFilenames.join(' ').toUpperCase();
+            if (allRaws.includes('INCH')) {
+              variationTag = 'Available in 16" and 8" sizes';
+            } else if (allRaws.includes('PIECES') || allRaws.includes('PIECE') || allRaws.includes('PCS')) {
+              const pieceMatch = allRaws.match(/(\d+)\s*(PIECES|PIECE|PCS)/);
+              variationTag = pieceMatch ? `${pieceMatch[1]} Pieces Set` : 'Complete Set';
+            } else {
+              variationTag = 'Handcrafted Design';
+            }
+
+            card.innerHTML = `
+              <div class="product-image-wrapper">
+                ${sliderHTML}
+                <div class="product-image-overlay"></div>
+                ${flatDiscount > 0 ? `<div class="discount-tag">${flatDiscount}% OFF</div>` : ''}
+                ${finalPrice > 0 ? `
+                  <div class="product-price-badge">
+                    <span class="original-price">${cfg.currency}${originalPrice}</span>
+                    <span>${cfg.currency}${finalPrice}</span>
+                  </div>
+                ` : ''}
               </div>
-              <div class="slider-dots">
-                ${group.images.map((_, i) => `<div class="slider-dot ${i === 0 ? 'active' : ''}"></div>`).join('')}
+              <div class="product-info">
+                <div class="product-name">${group.name}</div>
+                <div class="product-tag">${cat.name.includes('Craft') ? 'Specialty Craft' : 'Premium Flower'}</div>
+                <span class="variation-tag">${variationTag}</span>
               </div>
             `;
-          } else {
-            sliderHTML = `<div class="product-image-wrapper"><img src="${group.images[0]}" alt="${group.name}"></div>`;
-          }
+            grid.appendChild(card);
 
-          // Determine variation tag based on filename
-          let variationTag = 'Premium Quality';
-          const allRaws = group.rawFilenames.join(' ').toUpperCase();
-
-          if (allRaws.includes('INCH')) {
-            variationTag = 'Available in 16" and 8" sizes';
-          } else if (allRaws.includes('PIECES') || allRaws.includes('PIECE') || allRaws.includes('PCS')) {
-            const pieceMatch = allRaws.match(/(\d+)\s*(PIECES|PIECE|PCS)/);
-            variationTag = pieceMatch ? `${pieceMatch[1]} Pieces Set` : 'Complete Set';
-          } else {
-            variationTag = 'Handcrafted Design';
-          }
-
-          card.innerHTML = `
-            <div class="product-image-wrapper">
-              ${sliderHTML}
-              <div class="product-image-overlay"></div>
-              ${discountPercent > 0 ? `<div class="discount-tag">${discountPercent}% OFF</div>` : ''}
-              ${finalPrice > 0 ? `
-                <div class="product-price-badge">
-                  <span class="original-price">${cfg.currency}${originalPrice}</span>
-                  <span>${cfg.currency}${finalPrice}</span>
-                </div>
-              ` : ''}
-            </div>
-            <div class="product-info">
-              <div class="product-name">${group.name}</div>
-              <div class="product-tag">Premium Artificial Flower</div>
-              <span class="variation-tag">${variationTag}</span>
-            </div>
-          `;
-          grid.appendChild(card);
-
-          // Auto-init slider for multiple images
-          if (group.images.length > 1) {
-            initCardSlider(card, group.images.length);
-          }
+            if (group.images.length > 1) {
+              initCardSlider(card, group.images.length);
+            }
+          });
         });
+
+        document.getElementById('statProducts').textContent = totalProductsCount + '+';
       }
 
       function initCardSlider(card, count) {

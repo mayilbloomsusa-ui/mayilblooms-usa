@@ -7,14 +7,6 @@ const path = require('path');
 const IMAGES_DIR = path.join(__dirname, 'images', 'product');
 const CONFIG_FILE = path.join(__dirname, 'config.js');
 
-// Ignore these images in the product grid (branding, logo, etc.)
-const IGNORE_LIST = [
-    'brand logo.jpeg',
-    'logo.png',
-    'logo.jpg',
-    'favicon'
-];
-
 // Helper to check if file is an image
 const isImage = (file) => {
     const ext = path.extname(file).toLowerCase();
@@ -22,31 +14,45 @@ const isImage = (file) => {
 };
 
 function main() {
-    console.log('🔍 Scanning images folder...');
+    console.log('🔍 Scanning images folder recursively...');
 
     if (!fs.existsSync(IMAGES_DIR)) {
         console.error(`❌ Error: Images directory not found at ${IMAGES_DIR}`);
         return;
     }
 
-    // Read all files in images dir
-    const allFiles = fs.readdirSync(IMAGES_DIR);
+    const categories = [];
+    const items = fs.readdirSync(IMAGES_DIR, { withFileTypes: true });
 
-    // Filter for product images
-    const productImages = allFiles.filter(file => {
-        // Must be an image
-        if (!isImage(file)) return false;
+    items.forEach(item => {
+        if (item.isDirectory()) {
+            const catName = item.name;
+            const catPath = path.join(IMAGES_DIR, catName);
+            const files = fs.readdirSync(catPath)
+                .filter(file => isImage(file))
+                .map(file => `${catName}/${file}`);
 
-        // Must not be in ignore list (case insensitive)
-        const lowerFile = file.toLowerCase();
-        const isIgnored = IGNORE_LIST.some(ignore => lowerFile.includes(ignore.toLowerCase()));
-
-        return !isIgnored;
+            if (files.length > 0) {
+                categories.push({
+                    name: catName === 'crafts' ? 'Value Added Crafts' : (catName.charAt(0).toUpperCase() + catName.slice(1)),
+                    id: catName,
+                    products: files
+                });
+            }
+        }
     });
 
-    console.log(`✅ Found ${productImages.length} product images.`);
+    const rootFiles = items.filter(item => item.isFile() && isImage(item.name))
+        .map(item => item.name);
 
-    // Read config.js
+    if (rootFiles.length > 0) {
+        categories.unshift({
+            name: "Other Products",
+            id: "other",
+            products: rootFiles
+        });
+    }
+
     if (!fs.existsSync(CONFIG_FILE)) {
         console.error(`❌ Error: config.js not found at ${CONFIG_FILE}`);
         return;
@@ -54,22 +60,26 @@ function main() {
 
     let configContent = fs.readFileSync(CONFIG_FILE, 'utf8');
 
-    // Replace the products array content
-    // We look for "products: [" followed by anything until "],"
-    const productsArrayRegex = /(products:\s*\[)([\s\S]*?)(\],)/;
+    const categoriesJson = JSON.stringify(categories, null, 2)
+        .replace(/"([^"]+)":/g, '$1:');
 
-    const newProductsList = productImages.map(img => `    "${img}"`).join(',\n');
-    const replacement = `$1\n${newProductsList}\n  $3`;
+    // Use regular string replacement instead of regex with backreferences to avoid $ interpretation
+    const productsStartMarker = 'products: [';
+    const productsEndMarker = '],';
+    const categoriesStartMarker = 'categories: [';
 
-    const updatedConfig = configContent.replace(productsArrayRegex, (match, p1, p2, p3) => {
-        return `${p1}\n${newProductsList}\n  ${p3}`;
-    });
+    if (configContent.includes(categoriesStartMarker)) {
+        const startIndex = configContent.indexOf(categoriesStartMarker);
+        const endIndex = configContent.indexOf(productsEndMarker, startIndex) + 2;
+        configContent = configContent.slice(0, startIndex) + `categories: ${categoriesJson},` + configContent.slice(endIndex);
+    } else if (configContent.includes(productsStartMarker)) {
+        const startIndex = configContent.indexOf(productsStartMarker);
+        const endIndex = configContent.indexOf(productsEndMarker, startIndex) + 2;
+        configContent = configContent.slice(0, startIndex) + `categories: ${categoriesJson},` + configContent.slice(endIndex);
+    }
 
-    // Write back to config.js
-    fs.writeFileSync(CONFIG_FILE, updatedConfig, 'utf8');
-
-    console.log('✨ config.js has been automatically updated with the latest products!');
-    console.log('🚀 Open index.html to see the changes.');
+    fs.writeFileSync(CONFIG_FILE, configContent, 'utf8');
+    console.log('✨ config.js has been updated with categorized products!');
 }
 
 main();

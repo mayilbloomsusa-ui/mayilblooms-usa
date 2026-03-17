@@ -45,12 +45,12 @@ const catalogConfig = {
     // These cycle at the top and synchronize with titles and festival messages!
     heroSlides: [
         {
-            image: "images/product/BLOOMED JASMINE MALLIPOO 16INCH_$35.jpg",
+            image: "images/product/flowers/BLOOMED JASMINE MALLIPOO 16INCH_$35.jpg",
             title: "Exquisite Artificial Flowers",
             subtitle: "Premium quality that lasts forever — for temples & weddings"
         },
         {
-            image: "images/product/CLOSED MALLIPOO STRING 16INCH_$35.png",
+            image: "images/product/flowers/CLOSED MALLIPOO STRING 16INCH_$35.png",
             title: "Long Lasting Garlands",
             subtitle: "Handcrafted beauty that never wilts"
         }
@@ -65,19 +65,31 @@ const catalogConfig = {
     // 3. Variations like "16inch" or "8inch" are ignored in the name.
     // 4. Price in filename is the FINAL price after discount.
     //
+    categories: [
+  {
+    name: "Value Added Crafts",
+    id: "crafts",
     products: [
-    "Artificial Jasmine Bud Hair Rubber Band_$5.jpg",
-    "BLOOMED  MULLIPOO 16INCH STRING_$30 - Copy.jpeg",
-    "BLOOMED JAATHI MALLIPOO 16INCH STRING_$30 - Copy.jpeg",
-    "BLOOMED JASMINE MALLIPOO 16INCH_$35.jpg",
-    "CLOSED MALLIPOO STRING 16INCH_$35 - Copy.jpeg",
-    "CLOSED MALLIPOO STRING 16INCH_$35.png",
-    "MALLI CENTER MEDIUM HAIR CLIP_$8.png",
-    "Realistic Jasmine 9 pieces Jadai Set_$40.png",
-    "Realistic Jasmine Hair U Pin_$4.png",
-    "closed mullaiPOO STRING 16 INCH_$35(1).webp",
-    "closed mullaiPOO STRING 16 INCH_$35.png"
-  ],
+      "crafts/Artificial Jasmine Bud Hair Rubber Band_$5.jpg",
+      "crafts/MALLI CENTER MEDIUM HAIR CLIP_$8.png",
+      "crafts/Realistic Jasmine 9 pieces Jadai Set_$40.png",
+      "crafts/Realistic Jasmine Hair U Pin_$4.png"
+    ]
+  },
+  {
+    name: "Flowers",
+    id: "flowers",
+    products: [
+      "flowers/BLOOMED  MULLIPOO 16INCH STRING_$30 - Copy.jpeg",
+      "flowers/BLOOMED JAATHI MALLIPOO 16INCH STRING_$30 - Copy.jpeg",
+      "flowers/BLOOMED JASMINE MALLIPOO 16INCH_$35.jpg",
+      "flowers/CLOSED MALLIPOO STRING 16INCH_$35 - Copy.jpeg",
+      "flowers/CLOSED MALLIPOO STRING 16INCH_$35.png",
+      "flowers/closed mullaiPOO STRING 16 INCH_$35(1).webp",
+      "flowers/closed mullaiPOO STRING 16 INCH_$35.png"
+    ]
+  }
+],
 
     // ─── Appearance ───────────────────────────────────────────
     accentColor: "#C8102E",
