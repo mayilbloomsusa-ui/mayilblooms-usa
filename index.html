@@ -1,0 +1,2011 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Mayil blooms — Premium Artificial Flowers Catalog. Wholesale & retail supplier of high-quality artificial flowers, garlands, and decorations.">
+  <meta name="keywords" content="artificial flowers, wholesale flowers, flower garlands, decorations, Mayil blooms">
+  <title>Mayil blooms — Premium Artificial Flowers Catalog</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <script src="config.js" defer></script>
+
+  <style>
+    /* ════════════════════════════════════════════════════════
+       CSS RESET & BASE
+       ════════════════════════════════════════════════════════ */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --accent: #C8102E;
+      --accent-dark: #9D0B20;
+      --accent-light: #E8384F;
+      --gold: #D4A853;
+      --gold-light: #F0D48A;
+      --bg-dark: #0a0a0f;
+      --bg-card: rgba(255, 255, 255, 0.06);
+      --bg-card-hover: rgba(255, 255, 255, 0.12);
+      --text-primary: #FFFFFF;
+      --text-secondary: rgba(255, 255, 255, 0.7);
+      --text-muted: rgba(255, 255, 255, 0.45);
+      --border-glass: rgba(255, 255, 255, 0.12);
+      --border-glass-hover: rgba(255, 255, 255, 0.25);
+      --shadow-glow: 0 8px 32px rgba(200, 16, 46, 0.15);
+      --radius-sm: 12px;
+      --radius-md: 20px;
+      --radius-lg: 32px;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'Inter', -apple-system, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       ANIMATED MESH GRADIENT BACKGROUND
+       ════════════════════════════════════════════════════════ */
+    .mesh-gradient {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -2;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(200, 16, 46, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(212, 168, 83, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, rgba(120, 40, 80, 0.12) 0%, transparent 50%),
+        var(--bg-dark);
+      animation: meshMove 20s ease-in-out infinite alternate;
+    }
+
+    @keyframes meshMove {
+      0% {
+        background-position: 0% 0%, 100% 0%, 50% 100%;
+      }
+
+      25% {
+        background-position: 30% 20%, 70% 40%, 20% 60%;
+      }
+
+      50% {
+        background-position: 60% 40%, 30% 70%, 80% 30%;
+      }
+
+      75% {
+        background-position: 40% 60%, 80% 20%, 50% 80%;
+      }
+
+      100% {
+        background-position: 100% 100%, 0% 100%, 50% 0%;
+      }
+    }
+
+    .mesh-gradient::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 60% 30%, rgba(200, 16, 46, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 30% 70%, rgba(212, 168, 83, 0.06) 0%, transparent 60%);
+      animation: meshMove2 25s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes meshMove2 {
+      0% {
+        opacity: 0.3;
+        transform: scale(1) rotate(0deg);
+      }
+
+      50% {
+        opacity: 0.8;
+        transform: scale(1.1) rotate(2deg);
+      }
+
+      100% {
+        opacity: 0.5;
+        transform: scale(1) rotate(-1deg);
+      }
+    }
+
+    /* Grain overlay for texture */
+    .grain-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.03;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
+    /* ════════════════════════════════════════════════════════
+       PARALLAX WRAPPER
+       ════════════════════════════════════════════════════════ */
+    .parallax-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -3;
+      will-change: transform;
+    }
+
+    .parallax-bg .floating-shape {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.08;
+      animation: floatShape 30s ease-in-out infinite;
+    }
+
+    .parallax-bg .shape-1 {
+      width: 500px;
+      height: 500px;
+      background: var(--accent);
+      top: -10%;
+      right: -10%;
+      animation-delay: 0s;
+    }
+
+    .parallax-bg .shape-2 {
+      width: 400px;
+      height: 400px;
+      background: var(--gold);
+      bottom: 10%;
+      left: -10%;
+      animation-delay: -10s;
+    }
+
+    .parallax-bg .shape-3 {
+      width: 300px;
+      height: 300px;
+      background: #6B2D5B;
+      top: 40%;
+      right: 30%;
+      animation-delay: -20s;
+    }
+
+    @keyframes floatShape {
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      33% {
+        transform: translate(30px, -40px) scale(1.1);
+      }
+
+      66% {
+        transform: translate(-20px, 30px) scale(0.95);
+      }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       NAVIGATION BAR
+       ════════════════════════════════════════════════════════ */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 24px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .navbar.scrolled {
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(24px) saturate(1.8);
+      -webkit-backdrop-filter: blur(24px) saturate(1.8);
+      border-bottom: 1px solid var(--border-glass);
+      padding: 12px 40px;
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      text-decoration: none;
+    }
+
+    .navbar-logo {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--gold);
+      box-shadow: 0 0 20px rgba(212, 168, 83, 0.4);
+      animation: logoReveal 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+      background: white;
+      /* Fallback for transparent pngs */
+    }
+
+    @keyframes logoReveal {
+      0% {
+        transform: scale(0) rotate(-180deg);
+        opacity: 0;
+      }
+
+      60% {
+        transform: scale(1.1) rotate(10deg);
+      }
+
+      100% {
+        transform: scale(1) rotate(0);
+        opacity: 1;
+      }
+    }
+
+    .navbar-name {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 24px;
+      color: white;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #fff, #aaa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeInRight 1s ease forwards;
+      animation-delay: 0.3s;
+      opacity: 0;
+    }
+
+    @keyframes fadeInRight {
+      from {
+        transform: translateX(-20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .navbar-logo:hover {
+      transform: scale(1.05);
+    }
+
+    .navbar-logo-placeholder {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--gold));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 20px;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .navbar-name {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--text-primary), var(--gold-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .navbar-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .navbar-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    .navbar-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--gold);
+      transition: width 0.3s ease;
+    }
+
+    .navbar-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .navbar-links a:hover::after {
+      width: 100%;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       HERO SECTION — KEN BURNS IMAGE FADER
+       ════════════════════════════════════════════════════════ */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 600px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-slides {
+      position: absolute;
+      inset: 0;
+    }
+
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .hero-slide.active {
+      opacity: 1;
+    }
+
+    .hero-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      animation: kenBurns 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes kenBurns {
+      0% {
+        transform: scale(1) translate(0, 0);
+      }
+
+      100% {
+        transform: scale(1.12) translate(-1%, -1%);
+      }
+    }
+
+    .hero-slide:nth-child(2) img {
+      animation-delay: -3s;
+      animation-direction: alternate-reverse;
+    }
+
+    .hero-slide:nth-child(3) img {
+      animation-delay: -6s;
+    }
+
+    .hero-slide:nth-child(4) img {
+      animation-delay: -9s;
+      animation-direction: alternate-reverse;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom,
+          rgba(10, 10, 15, 0.4) 0%,
+          rgba(10, 10, 15, 0.2) 40%,
+          rgba(10, 10, 15, 0.6) 70%,
+          rgba(10, 10, 15, 0.95) 100%);
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 0 24px;
+      max-width: 800px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      border-radius: 100px;
+      background: rgba(212, 168, 83, 0.15);
+      border: 1px solid rgba(212, 168, 83, 0.3);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gold-light);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      animation: fadeInUp 1s ease 0.3s both;
+    }
+
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.5;
+        transform: scale(0.8);
+      }
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 6vw, 72px);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #FFFFFF 0%, var(--gold-light) 50%, #FFFFFF 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 200% 200%;
+      animation: fadeInUp 1s ease 0.5s both, shimmer 6s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+
+      0%,
+      100% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+    }
+
+    .hero p {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 36px;
+      font-weight: 300;
+      line-height: 1.7;
+      animation: fadeInUp 1s ease 0.7s both;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeInUp 1s ease 0.9s both;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      border-radius: 100px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      letter-spacing: 0.3px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      color: white;
+      box-shadow: 0 4px 20px rgba(200, 16, 46, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(200, 16, 46, 0.5);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-primary);
+      border: 1px solid var(--border-glass);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: var(--border-glass-hover);
+      transform: translateY(-2px);
+    }
+
+    .hero-scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      animation: fadeInUp 1s ease 1.2s both;
+    }
+
+    .hero-scroll-indicator span {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scaleY(1);
+      }
+
+      50% {
+        opacity: 0.3;
+        transform: scaleY(0.6);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       SECTION COMMON
+       ════════════════════════════════════════════════════════ */
+    .section {
+      position: relative;
+      padding: 100px 24px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .section-label::before,
+    .section-label::after {
+      content: '';
+      width: 30px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold));
+    }
+
+    .section-label::after {
+      background: linear-gradient(to left, transparent, var(--gold));
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 700;
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+
+    .section-subtitle {
+      font-size: 16px;
+      color: var(--text-secondary);
+      max-width: 500px;
+      margin: 0 auto;
+      font-weight: 300;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       PRODUCT GRID
+       ════════════════════════════════════════════════════════ */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .product-card {
+      position: relative;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      backdrop-filter: blur(20px) saturate(1.2);
+      -webkit-backdrop-filter: blur(20px) saturate(1.2);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: default;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    .product-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .product-card:hover {
+      transform: translateY(-8px);
+      background: var(--bg-card-hover);
+      border-color: var(--border-glass-hover);
+      box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.4),
+        0 0 40px rgba(200, 16, 46, 0.06);
+    }
+
+    .product-image-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4/5;
+      overflow: hidden;
+    }
+
+    .product-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .product-card:hover .product-image-wrapper img {
+      transform: scale(1.08);
+    }
+
+    .product-image-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom,
+          transparent 50%,
+          rgba(10, 10, 15, 0.8) 100%);
+      pointer-events: none;
+    }
+
+    .product-price-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      padding: 8px 18px;
+      border-radius: 100px;
+      background: rgba(10, 10, 15, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(212, 168, 83, 0.3);
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--gold-light);
+      letter-spacing: 0.5px;
+      z-index: 10;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      line-height: 1;
+    }
+
+    .original-price {
+      font-size: 11px;
+      text-decoration: line-through;
+      opacity: 0.6;
+      margin-bottom: 4px;
+      color: var(--text-secondary);
+    }
+
+    .discount-tag {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      padding: 4px 12px;
+      border-radius: 6px;
+      background: var(--accent);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      z-index: 10;
+      box-shadow: 0 4px 12px rgba(200, 16, 46, 0.3);
+    }
+
+    /* Image Slider in Card */
+    .card-slider {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card-slide {
+      min-width: 100%;
+      height: 100%;
+    }
+
+    .card-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .slider-dots {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      z-index: 11;
+    }
+
+    .slider-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .slider-dot.active {
+      background: white;
+      width: 12px;
+      border-radius: 100px;
+    }
+
+    .variation-tag {
+      font-size: 11px;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 8px;
+      font-weight: 600;
+      display: block;
+    }
+
+    #festivalBanner {
+      display: none;
+      background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+      color: white;
+      padding: 10px 24px;
+      text-align: center;
+      font-weight: 600;
+      letter-spacing: 1px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 2000;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      border-radius: 0 !important;
+      margin-top: 0 !important;
+      animation: slideDown 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 5;
+      max-width: 800px;
+      padding: 0 24px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .hero-content.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes slideDown {
+      from {
+        transform: translateY(-100%);
+      }
+
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    body {
+      padding-top: 40px;
+      /* Adjust for banner */
+    }
+
+    .product-info {
+      padding: 20px 24px 24px;
+    }
+
+    .product-name {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+
+    .product-tag {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       FEATURES / HIGHLIGHTS SECTION
+       ════════════════════════════════════════════════════════ */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .feature-card {
+      padding: 32px;
+      border-radius: var(--radius-md);
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      text-align: center;
+      transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .feature-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .feature-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-glass-hover);
+      transform: translateY(-4px);
+    }
+
+    .feature-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(200, 16, 46, 0.15), rgba(212, 168, 83, 0.15));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      margin: 0 auto 18px;
+    }
+
+    .feature-card h3 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       CONTACT SECTION
+       ════════════════════════════════════════════════════════ */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .contact-card {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 24px 28px;
+      border-radius: var(--radius-md);
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .contact-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .contact-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-glass-hover);
+      transform: translateY(-4px);
+    }
+
+    .contact-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .contact-icon.phone {
+      background: linear-gradient(135deg, #25D366, #128C7E);
+    }
+
+    .contact-icon.whatsapp {
+      background: linear-gradient(135deg, #25D366, #128C7E);
+    }
+
+    .contact-icon.email {
+      background: linear-gradient(135deg, #EA4335, #C5221F);
+    }
+
+    .contact-icon.instagram {
+      background: linear-gradient(135deg, #E1306C, #F77737, #FCAF45);
+    }
+
+    .contact-icon.youtube {
+      background: linear-gradient(135deg, #FF0000, #CC0000);
+    }
+
+    .contact-icon.address {
+      background: linear-gradient(135deg, var(--gold), var(--accent));
+    }
+
+    .contact-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    /* ════════════════════════════════════════════════════════
+       FLOATING ACTION BUTTON (FAB)
+       ════════════════════════════════════════════════════════ */
+    .fab-container {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+    }
+
+    .fab-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      opacity: 0;
+      transform: translateY(20px) scale(0.8);
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .fab-container.open .fab-actions {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: all;
+    }
+
+    .fab-action {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 18px 10px 14px;
+      border-radius: 100px;
+      background: rgba(30, 30, 40, 0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-glass);
+      color: var(--text-primary);
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+    }
+
+    .fab-action:hover {
+      background: rgba(50, 50, 65, 0.95);
+      border-color: var(--border-glass-hover);
+      transform: translateX(-4px);
+    }
+
+    .fab-action-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .fab-action-icon.wa {
+      background: linear-gradient(135deg, #25D366, #128C7E);
+    }
+
+    .fab-action-icon.call {
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    }
+
+    .fab-main {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      border: none;
+      color: white;
+      font-size: 26px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 24px rgba(200, 16, 46, 0.4);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .fab-main:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 32px rgba(200, 16, 46, 0.5);
+    }
+
+    .fab-main .fab-icon-open,
+    .fab-main .fab-icon-close {
+      position: absolute;
+      transition: all 0.3s ease;
+    }
+
+    .fab-main .fab-icon-close {
+      opacity: 0;
+      transform: rotate(-90deg);
+    }
+
+    .fab-container.open .fab-main .fab-icon-open {
+      opacity: 0;
+      transform: rotate(90deg);
+    }
+
+    .fab-container.open .fab-main .fab-icon-close {
+      opacity: 1;
+      transform: rotate(0deg);
+    }
+
+    .fab-pulse {
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      animation: fabPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes fabPulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 0.6;
+      }
+
+      50% {
+        transform: scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       FOOTER
+       ════════════════════════════════════════════════════════ */
+    .footer {
+      text-align: center;
+      padding: 48px 24px;
+      border-top: 1px solid var(--border-glass);
+      margin-top: 0;
+    }
+
+    .footer-brand {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--text-primary), var(--gold-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .footer-text {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .footer-divider {
+      margin: 20px auto;
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+    }
+
+    /* ════════════════════════════════════════════════════════
+       RESPONSIVE
+       ════════════════════════════════════════════════════════ */
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 12px 16px;
+      }
+
+      .navbar.scrolled {
+        padding: 8px 16px;
+      }
+
+      .navbar-name {
+        font-size: 18px;
+      }
+
+      .navbar-links {
+        display: none;
+      }
+
+      .section {
+        padding: 60px 16px;
+      }
+
+      .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 16px;
+      }
+
+      .hero-cta {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .btn {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .fab-container {
+        bottom: 20px;
+        right: 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .product-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 32px;
+      }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       LOADING SKELETON
+       ════════════════════════════════════════════════════════ */
+    .skeleton {
+      background: linear-gradient(90deg,
+          var(--bg-card) 25%,
+          rgba(255, 255, 255, 0.06) 50%,
+          var(--bg-card) 75%);
+      background-size: 200% 100%;
+      animation: skeletonShimmer 1.5s infinite;
+      border-radius: var(--radius-sm);
+    }
+
+    @keyframes skeletonShimmer {
+      0% {
+        background-position: 200% 0;
+      }
+
+      100% {
+        background-position: -200% 0;
+      }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       COUNTER / STAT SECTION
+       ════════════════════════════════════════════════════════ */
+    .stats-row {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+      padding: 40px 0;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       DIVIDER
+       ════════════════════════════════════════════════════════ */
+    .section-divider {
+      width: 100%;
+      height: 1px;
+      max-width: 1280px;
+      margin: 0 auto;
+      background: linear-gradient(to right, transparent, var(--border-glass), transparent);
+    }
+
+    /* ════════════════════════════════════════════════════════
+       EMPTY STATE
+       ════════════════════════════════════════════════════════ */
+    .empty-state {
+      text-align: center;
+      padding: 80px 24px;
+      color: var(--text-secondary);
+    }
+
+    .empty-state .empty-icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+      opacity: 0.5;
+    }
+
+    .empty-state h3 {
+      font-family: var(--font-display);
+      font-size: 24px;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+
+    .empty-state p {
+      max-width: 400px;
+      margin: 0 auto;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .empty-state code {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      font-size: 14px;
+      color: var(--gold-light);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Animated Background Layers -->
+  <div class="parallax-bg" id="parallaxBg">
+    <div class="floating-shape shape-1"></div>
+    <div class="floating-shape shape-2"></div>
+    <div class="floating-shape shape-3"></div>
+  </div>
+  <div class="mesh-gradient"></div>
+  <div class="grain-overlay"></div>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <a href="#" class="navbar-brand" id="navbarBrand">
+      <!-- Logo or placeholder injected by JS -->
+    </a>
+    <ul class="navbar-links">
+      <li><a href="#products">Products</a></li>
+      <li><a href="#why-us">Why Us</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Festival Banner -->
+  <div id="festivalBanner" style="display:none;" class="hero-badge"
+    style="margin: 0; border-radius: 0; width: 100%; justify-content: center; position: relative; z-index: 1001; margin-top: 80px;">
+    <span class="dot"></span>
+    <span id="festivalText">Festival Greeting</span>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-slides" id="heroSlides">
+      <!-- Slides injected by JS -->
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        <span id="heroBadgeText">Premium Collection</span>
+      </div>
+      <h1 id="heroTitle">Exquisite Artificial Flowers</h1>
+      <p id="heroSubtitle">Premium quality that lasts forever</p>
+      <div class="hero-cta">
+        <a href="#products" class="btn btn-primary">
+          ✦ View Catalog
+        </a>
+        <a href="#contact" class="btn btn-secondary">
+          ✉ Get in Touch
+        </a>
+      </div>
+    </div>
+    <div class="hero-scroll-indicator">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- Stats Row -->
+  <div class="section-divider"></div>
+  <div class="section" style="padding: 40px 24px;">
+    <div class="stats-row" id="statsRow">
+      <div class="stat-item">
+        <div class="stat-number" id="statProducts">0</div>
+        <div class="stat-label">Products</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Handcrafted</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">∞</div>
+        <div class="stat-label">Lifespan</div>
+      </div>
+    </div>
+  </div>
+  <div class="section-divider"></div>
+
+  <!-- Products Section -->
+  <section class="section" id="products">
+    <div class="section-header">
+      <div class="section-label">Our Collection</div>
+      <h2 class="section-title">Artificial Flower Catalog</h2>
+      <p class="section-subtitle">Beautiful, long-lasting artificial flowers for every occasion</p>
+    </div>
+    <div class="product-grid" id="productGrid">
+      <!-- Cards injected by JS -->
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Why Us Section -->
+  <section class="section" id="why-us">
+    <div class="section-header">
+      <div class="section-label">Why Choose Us</div>
+      <h2 class="section-title">The Mayil blooms Difference</h2>
+      <p class="section-subtitle">Here's what sets our artificial flowers apart</p>
+    </div>
+    <div class="features-grid" id="featuresGrid">
+      <div class="feature-card">
+        <div class="feature-icon">🌸</div>
+        <h3>Lifelike Quality</h3>
+        <p>Our artificial flowers are crafted with premium materials to look and feel incredibly realistic.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">♾️</div>
+        <h3>Everlasting Beauty</h3>
+        <p>No watering, no wilting, no maintenance. Perfect beauty that lasts a lifetime.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎨</div>
+        <h3>Wide Variety</h3>
+        <p>From traditional garlands to modern arrangements — we have every flower you need.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📦</div>
+        <h3>Bulk Orders Welcome</h3>
+        <p>Special wholesale pricing for shops, temples, event decorators, and businesses.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Contact Section -->
+  <section class="section" id="contact">
+    <div class="section-header">
+      <div class="section-label">Get in Touch</div>
+      <h2 class="section-title">Contact Us</h2>
+      <p class="section-subtitle">Ready to place an order? We'd love to hear from you.</p>
+    </div>
+    <div class="contact-grid" id="contactGrid">
+      <!-- Contact cards injected by JS -->
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" id="footer">
+    <div class="footer-brand" id="footerBrand">Mayil blooms</div>
+    <div class="footer-divider"></div>
+    <p class="footer-text" id="footerText">Premium Artificial Flowers — Beauty That Lasts Forever</p>
+    <p class="footer-text" style="margin-top: 8px; opacity: 0.5;" id="footerCopy">&copy; 2026 Mayil blooms. All rights
+      reserved.</p>
+  </footer>
+
+  <!-- Floating Action Button -->
+  <div class="fab-container" id="fabContainer">
+    <div class="fab-actions" id="fabActions">
+      <!-- Injected by JS -->
+    </div>
+    <button class="fab-main" id="fabMain" aria-label="Contact us">
+      <span class="fab-icon-open">💬</span>
+      <span class="fab-icon-close">✕</span>
+      <div class="fab-pulse"></div>
+    </button>
+  </div>
+
+  <!-- Config Script Moved to Head -->
+
+  <!-- Engine Script -->
+  <script>
+    (function () {
+      'use strict';
+
+      // ─── Utility: Parse product filename ───────────────────
+      function cleanProductName(filename) {
+        // Remove extension
+        let name = filename.replace(/\.[^.]+$/, '');
+        // Split at $ if exists
+        const dollarIndex = name.lastIndexOf('$');
+        if (dollarIndex !== -1) name = name.substring(0, dollarIndex);
+
+        // Remove known variations and debris
+        const itemsToRemove = [
+          '16INCH', '16 INCH', '8INCH', '8 INCH', 'STRING', 'COPY',
+          'FRONT', 'BACK', 'MEDIUM', 'SMALL', 'LARGE', 'FULL SET',
+          '-', '_', '(', ')'
+        ];
+
+        let cleaned = name.toUpperCase();
+        itemsToRemove.forEach(item => {
+          cleaned = cleaned.split(item).join(' ');
+        });
+
+        // Clean extra spaces and numbers
+        cleaned = cleaned.replace(/\s+/g, ' ').replace(/\d+/g, '').trim();
+
+        return titleCase(cleaned.toLowerCase());
+      }
+
+      function parsePrice(filename) {
+        const match = filename.match(/\$(\d+)/);
+        return match ? parseInt(match[1]) : null;
+      }
+
+      function titleCase(str) {
+        return str.replace(/\b\w/g, c => c.toUpperCase());
+      }
+
+      // ─── Build Festival Banner ─────────────────────────────
+      function buildFestivalBanner() {
+        const banner = document.getElementById('festivalBanner');
+        const text = document.getElementById('festivalText');
+        const cfg = catalogConfig;
+
+        if (cfg.festivalMessage && cfg.festivalMessage.trim() !== "") {
+          text.textContent = cfg.festivalMessage;
+          banner.style.display = 'flex';
+          document.body.style.paddingTop = banner.offsetHeight + 'px';
+        } else {
+          banner.style.display = 'none';
+          document.body.style.paddingTop = '0px';
+        }
+      }
+
+      // ─── Build Navbar ──────────────────────────────────────
+      function buildNavbar() {
+        const brand = document.getElementById('navbarBrand');
+        const cfg = catalogConfig;
+
+        // Check if logo exists
+        const logoHTML = cfg.logo
+          ? `<img src="${cfg.logo}" alt="${cfg.businessName}" class="navbar-logo" onerror="this.outerHTML='<div class=\\'navbar-logo-placeholder\\'>${cfg.businessName.charAt(0)}</div>'">`
+          : `<div class="navbar-logo-placeholder">${cfg.businessName.charAt(0)}</div>`;
+
+        brand.innerHTML = `
+          ${logoHTML}
+          <span class="navbar-name">${cfg.businessName}</span>
+        `;
+
+        // Scroll effect
+        window.addEventListener('scroll', () => {
+          const navbar = document.getElementById('navbar');
+          const banner = document.getElementById('festivalBanner');
+          const threshold = 80;
+
+          if (window.scrollY > threshold) {
+            navbar.classList.add('scrolled');
+            if (banner && banner.style.display !== 'none') {
+              navbar.style.top = '0px';
+            }
+          } else {
+            navbar.classList.remove('scrolled');
+          }
+        });
+      }
+
+      // ─── Build Hero ────────────────────────────────────────
+      function buildHero() {
+        const cfg = catalogConfig;
+        const slidesContainer = document.getElementById('heroSlides');
+
+        // Hero slides
+        const slides = cfg.heroSlides && cfg.heroSlides.length > 0
+          ? cfg.heroSlides
+          : (cfg.products && cfg.products.length > 0
+            ? cfg.products.slice(0, 4).map(f => ({ image: (cfg.imagesFolder || 'images') + '/' + f, title: cfg.heroTitle, subtitle: cfg.heroSubtitle }))
+            : []);
+
+        if (slides.length === 0) {
+          slidesContainer.innerHTML = `<div class="hero-slide active" style="background: linear-gradient(135deg, #1a0a10, #0a0a15); width:100%; height:100%;"></div>`;
+          return;
+        }
+
+        slides.forEach((slideData, i) => {
+          const slide = document.createElement('div');
+          slide.className = 'hero-slide' + (i === 0 ? ' active' : '');
+          slide.innerHTML = `<img src="${slideData.image}" alt="Slide ${i + 1}" loading="${i === 0 ? 'eager' : 'lazy'}" ${i === 0 ? 'fetchpriority="high"' : ''}>`;
+          slidesContainer.appendChild(slide);
+        });
+
+        // Auto-cycle slides with text sync
+        if (slides.length > 1) {
+          let currentSlide = 0;
+          const slideElements = slidesContainer.querySelectorAll('.hero-slide');
+          const heroContent = document.querySelector('.hero-content');
+
+          function updateSlideContent(index) {
+            const data = slides[index];
+            const titleEl = document.getElementById('heroTitle');
+            const subEl = document.getElementById('heroSubtitle');
+            const festivalEl = document.getElementById('festivalText');
+            const banner = document.getElementById('festivalBanner');
+
+            // Fade out text
+            heroContent.classList.remove('active');
+
+            setTimeout(() => {
+              if (data.title) titleEl.textContent = data.title;
+              if (data.subtitle) subEl.textContent = data.subtitle;
+
+              // Handle mapping for festival message
+              const festMsg = data.festivalMessage || cfg.festivalMessageFallback;
+              if (festMsg) {
+                festivalEl.textContent = festMsg;
+                banner.style.display = 'flex';
+              } else {
+                banner.style.display = 'none';
+              }
+
+              // Fade in text
+              heroContent.classList.add('active');
+            }, 400);
+          }
+
+          // Initial state
+          updateSlideContent(0);
+
+          setInterval(() => {
+            slideElements[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slideElements.length;
+            slideElements[currentSlide].classList.add('active');
+            updateSlideContent(currentSlide);
+          }, 6000);
+        } else if (slides.length === 1) {
+          // Just one slide, init once
+          const heroContent = document.querySelector('.hero-content');
+          heroContent.classList.add('active');
+          const data = slides[0];
+          if (data.title) document.getElementById('heroTitle').textContent = data.title;
+          if (data.subtitle) document.getElementById('heroSubtitle').textContent = data.subtitle;
+          const festMsg = data.festivalMessage || cfg.festivalMessageFallback;
+          if (festMsg) {
+            document.getElementById('festivalText').textContent = festMsg;
+            document.getElementById('festivalBanner').style.display = 'flex';
+          }
+        }
+      }
+
+      // ─── Build Products ────────────────────────────────────
+      function buildProducts() {
+        const cfg = catalogConfig;
+        const grid = document.getElementById('productGrid');
+        const productFilenames = cfg.products || [];
+        const flatDiscount = cfg.flatDiscount || 0;
+
+        // Group products by cleaned name
+        const groups = {};
+        productFilenames.forEach(fn => {
+          const name = cleanProductName(fn);
+          if (!groups[name]) groups[name] = { name, images: [], prices: [] };
+          groups[name].images.push((cfg.imagesFolder || 'images') + '/' + fn);
+          const price = parsePrice(fn);
+          if (price !== null) groups[name].prices.push(price);
+        });
+
+        const productEntries = Object.values(groups);
+        document.getElementById('statProducts').textContent = productEntries.length + '+';
+
+        if (productEntries.length === 0) {
+          grid.innerHTML = `<div class="empty-state" style="grid-column: 1 / -1;">...</div>`;
+          return;
+        }
+
+        productEntries.forEach((group, index) => {
+          // Final price is the minimum found in group (usually they same)
+          const finalPrice = group.prices.length > 0 ? Math.min(...group.prices) : 0;
+          const originalPrice = finalPrice + flatDiscount;
+          const discountPercent = originalPrice > 0 ? Math.round((flatDiscount / originalPrice) * 100) : 0;
+
+          const card = document.createElement('div');
+          card.className = 'product-card';
+          card.style.transitionDelay = `${index * 0.08}s`;
+
+          let sliderHTML = '';
+          if (group.images.length > 1) {
+            sliderHTML = `
+              <div class="card-slider" id="slider-${index}">
+                ${group.images.map(img => `<div class="card-slide"><img src="${img}" alt="${group.name}"></div>`).join('')}
+              </div>
+              <div class="slider-dots">
+                ${group.images.map((_, i) => `<div class="slider-dot ${i === 0 ? 'active' : ''}"></div>`).join('')}
+              </div>
+            `;
+          } else {
+            sliderHTML = `<div class="product-image-wrapper"><img src="${group.images[0]}" alt="${group.name}"></div>`;
+          }
+
+          card.innerHTML = `
+            <div class="product-image-wrapper">
+              ${sliderHTML}
+              <div class="product-image-overlay"></div>
+              ${discountPercent > 0 ? `<div class="discount-tag">${discountPercent}% OFF</div>` : ''}
+              ${finalPrice > 0 ? `
+                <div class="product-price-badge">
+                  <span class="original-price">${cfg.currency}${originalPrice}</span>
+                  <span>${cfg.currency}${finalPrice}</span>
+                </div>
+              ` : ''}
+            </div>
+            <div class="product-info">
+              <div class="product-name">${group.name}</div>
+              <div class="product-tag">Premium Artificial Flower</div>
+              <span class="variation-tag">Available in 16" and 8" sizes</span>
+            </div>
+          `;
+          grid.appendChild(card);
+
+          // Auto-init slider for multiple images
+          if (group.images.length > 1) {
+            initCardSlider(card, group.images.length);
+          }
+        });
+      }
+
+      function initCardSlider(card, count) {
+        const slider = card.querySelector('.card-slider');
+        const dots = card.querySelectorAll('.slider-dot');
+        let current = 0;
+
+        setInterval(() => {
+          dots[current].classList.remove('active');
+          current = (current + 1) % count;
+          slider.style.transform = `translateX(-${current * 100}%)`;
+          dots[current].classList.add('active');
+        }, 3000); // 3 seconds per image
+      }
+
+      // ─── Build Contact ─────────────────────────────────────
+      function buildContact() {
+        const cfg = catalogConfig;
+        const contact = cfg.contactDetails || {};
+        const grid = document.getElementById('contactGrid');
+        const items = [];
+
+        if (contact.phone) {
+          items.push({
+            icon: '📞', iconClass: 'phone',
+            label: 'Phone', value: contact.phone,
+            href: `tel:${contact.phone.replace(/[^+\d]/g, '')}`
+          });
+        }
+        if (contact.whatsapp) {
+          items.push({
+            icon: '💬', iconClass: 'whatsapp',
+            label: 'WhatsApp', value: 'Chat with us',
+            href: `https://wa.me/${contact.whatsapp.replace(/[^+\d]/g, '')}?text=Hi! I'm interested in your artificial flowers catalog.`
+          });
+        }
+        if (contact.email) {
+          items.push({
+            icon: '✉️', iconClass: 'email',
+            label: 'Email', value: contact.email,
+            href: `mailto:${contact.email}`
+          });
+        }
+        if (contact.facebook) {
+          items.push({
+            icon: '🔵', iconClass: 'facebook',
+            label: 'Facebook', value: 'Follow us',
+            href: contact.facebook.startsWith('http') ? contact.facebook : `https://facebook.com/${contact.facebook}`
+          });
+        }
+        if (contact.instagram) {
+          items.push({
+            icon: '📸', iconClass: 'instagram',
+            label: 'Instagram', value: contact.instagram.startsWith('http') ? 'Follow us' : '@' + contact.instagram,
+            href: contact.instagram.startsWith('http') ? contact.instagram : `https://instagram.com/${contact.instagram}`
+          });
+        }
+        if (contact.youtube) {
+          items.push({
+            icon: '▶️', iconClass: 'youtube',
+            label: 'YouTube', value: 'Subscribe',
+            href: contact.youtube.startsWith('http') ? contact.youtube : `https://youtube.com/@${contact.youtube}`
+          });
+        }
+        if (contact.address) {
+          items.push({
+            icon: '📍', iconClass: 'address',
+            label: 'Address', value: contact.address,
+            href: `https://maps.google.com/?q=${encodeURIComponent(contact.address)}`
+          });
+        }
+
+        items.forEach((item, index) => {
+          const card = document.createElement('a');
+          card.className = 'contact-card';
+          card.href = item.href;
+          card.target = item.iconClass === 'address' || item.iconClass === 'instagram' || item.iconClass === 'youtube' || item.iconClass === 'whatsapp' ? '_blank' : '_self';
+          card.rel = 'noopener noreferrer';
+          card.style.transitionDelay = `${index * 0.1}s`;
+          card.innerHTML = `
+            <div class="contact-icon ${item.iconClass}">${item.icon}</div>
+            <div>
+              <div class="contact-label">${item.label}</div>
+              <div class="contact-value">${item.value}</div>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      }
+
+      // ─── Build FAB ─────────────────────────────────────────
+      function buildFAB() {
+        const cfg = catalogConfig;
+        const contact = cfg.contactDetails || {};
+        const actions = document.getElementById('fabActions');
+        const fabMain = document.getElementById('fabMain');
+        const container = document.getElementById('fabContainer');
+
+        if (contact.whatsapp) {
+          const waLink = `https://wa.me/${contact.whatsapp.replace(/[^+\d]/g, '')}?text=Hi! I'm interested in your artificial flowers catalog.`;
+          actions.innerHTML += `
+            <a href="${waLink}" target="_blank" rel="noopener noreferrer" class="fab-action">
+              <div class="fab-action-icon wa">💬</div>
+              WhatsApp
+            </a>
+          `;
+        }
+
+        if (contact.phone) {
+          actions.innerHTML += `
+            <a href="tel:${contact.phone.replace(/[^+\d]/g, '')}" class="fab-action">
+              <div class="fab-action-icon call">📞</div>
+              Call Now
+            </a>
+          `;
+        }
+
+        // Toggle FAB
+        fabMain.addEventListener('click', () => {
+          container.classList.toggle('open');
+        });
+
+        // Close on outside click
+        document.addEventListener('click', (e) => {
+          if (!container.contains(e.target)) {
+            container.classList.remove('open');
+          }
+        });
+      }
+
+      // ─── Build Footer ──────────────────────────────────────
+      function buildFooter() {
+        const cfg = catalogConfig;
+        document.getElementById('footerBrand').textContent = cfg.businessName;
+        document.getElementById('footerText').textContent = cfg.tagline || 'Premium Artificial Flowers';
+        document.getElementById('footerCopy').innerHTML = `&copy; ${new Date().getFullYear()} ${cfg.businessName}. All rights reserved.`;
+      }
+
+      // ─── Scroll Animations ─────────────────────────────────
+      function setupScrollAnimations() {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+            }
+          });
+        }, {
+          threshold: 0.1,
+          rootMargin: '0px 0px -40px 0px'
+        });
+
+        // Observe product cards and feature cards
+        document.querySelectorAll('.product-card, .feature-card, .contact-card').forEach(el => {
+          observer.observe(el);
+        });
+      }
+
+      // ─── Parallax Effect ───────────────────────────────────
+      function setupParallax() {
+        const bg = document.getElementById('parallaxBg');
+        let ticking = false;
+
+        window.addEventListener('scroll', () => {
+          if (!ticking) {
+            requestAnimationFrame(() => {
+              const scrollY = window.scrollY;
+              bg.style.transform = `translateY(${scrollY * 0.3}px)`;
+              ticking = false;
+            });
+            ticking = true;
+          }
+        });
+      }
+
+      // ─── Update accent color from config ───────────────────
+      function updateAccentColor() {
+        if (catalogConfig.accentColor) {
+          document.documentElement.style.setProperty('--accent', catalogConfig.accentColor);
+        }
+      }
+
+      // ─── Initialize ────────────────────────────────────────
+      function init() {
+        updateAccentColor();
+        buildFestivalBanner();
+        buildNavbar();
+        buildHero();
+        buildProducts();
+        buildContact();
+        buildFAB();
+        buildFooter();
+
+        // Delay scroll animations to allow DOM to settle
+        requestAnimationFrame(() => {
+          setupScrollAnimations();
+        });
+
+        setupParallax();
+
+        // Update page title
+        document.title = `${catalogConfig.businessName} — ${catalogConfig.tagline || 'Product Catalog'}`;
+      }
+
+      // Wait for DOM
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+</body>
+
+</html>
