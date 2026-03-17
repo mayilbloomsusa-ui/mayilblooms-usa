@@ -25,7 +25,7 @@ const catalogConfig = {
     description: "Wholesale & retail supplier of high-quality artificial flowers, garlands, and decorations. Long-lasting beauty that never wilts.",
 
     // Path to your logo image (place the file in the images/ folder)
-    logo: "images/brand logo.jpeg",
+    logo: "images/logo/brand logo.jpeg",
 
     // ─── Pricing & Discounts ──────────────────────────────────
     flatDiscount: 30,
@@ -45,12 +45,12 @@ const catalogConfig = {
     // These cycle at the top and synchronize with titles and festival messages!
     heroSlides: [
         {
-            image: "images/BLOOMED JASMINE MALLIPOO 16INCH_$35.jpg",
+            image: "images/product/BLOOMED JASMINE MALLIPOO 16INCH_$35.jpg",
             title: "Exquisite Artificial Flowers",
             subtitle: "Premium quality that lasts forever — for temples & weddings"
         },
         {
-            image: "images/CLOSED MALLIPOO STRING 16INCH_$35.webp",
+            image: "images/product/CLOSED MALLIPOO STRING 16INCH_$35.png",
             title: "Long Lasting Garlands",
             subtitle: "Handcrafted beauty that never wilts"
         }
@@ -66,11 +66,21 @@ const catalogConfig = {
     // 4. Price in filename is the FINAL price after discount.
     //
     products: [
-
+    "Artificial Jasmine Bud Hair Rubber Band_$5.jpg",
+    "BLOOMED  MULLIPOO 16INCH STRING_$30 - Copy.jpeg",
+    "BLOOMED JAATHI MALLIPOO 16INCH STRING_$30 - Copy.jpeg",
+    "BLOOMED JASMINE MALLIPOO 16INCH_$35.jpg",
+    "CLOSED MALLIPOO STRING 16INCH_$35 - Copy.jpeg",
+    "CLOSED MALLIPOO STRING 16INCH_$35.png",
+    "MALLI CENTER MEDIUM HAIR CLIP_$8.png",
+    "Realistic Jasmine 9 pieces Jadai Set_$40.png",
+    "Realistic Jasmine Hair U Pin_$4.png",
+    "closed mullaiPOO STRING 16 INCH_$35(1).webp",
+    "closed mullaiPOO STRING 16 INCH_$35.png"
   ],
 
     // ─── Appearance ───────────────────────────────────────────
     accentColor: "#C8102E",
     currency: "$",
-    imagesFolder: "images",
+    imagesFolder: "images/product",
 };

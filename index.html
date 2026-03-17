@@ -157,6 +157,12 @@
       height: 100%;
       z-index: -3;
       will-change: transform;
+      pointer-events: none;
+    }
+
+    .parallax-bg.layer-2 {
+      z-index: -2;
+      opacity: 0.6;
     }
 
     .parallax-bg .floating-shape {
@@ -165,6 +171,11 @@
       filter: blur(80px);
       opacity: 0.08;
       animation: floatShape 30s ease-in-out infinite;
+    }
+
+    .layer-2 .floating-shape {
+      filter: blur(40px);
+      opacity: 0.05;
     }
 
     .parallax-bg .shape-1 {
@@ -224,13 +235,15 @@
       align-items: center;
       justify-content: space-between;
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      background: transparent;
+      background: rgba(10, 10, 15, 0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
     .navbar.scrolled {
-      background: rgba(10, 10, 15, 0.65);
-      backdrop-filter: blur(16px) saturate(1.8);
-      -webkit-backdrop-filter: blur(16px) saturate(1.8);
+      background: rgba(10, 10, 15, 0.5);
+      backdrop-filter: blur(24px) saturate(1.8);
+      -webkit-backdrop-filter: blur(24px) saturate(1.8);
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       padding: 16px 48px;
     }
@@ -242,6 +255,14 @@
       text-decoration: none;
     }
 
+    .logo-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
     .navbar-logo {
       width: 56px;
       height: 56px;
@@ -251,7 +272,47 @@
       box-shadow: 0 0 20px rgba(212, 168, 83, 0.4);
       animation: logoReveal 1.2s cubic-bezier(0.4, 0, 0.2, 1);
       background: white;
-      /* Fallback for transparent pngs */
+      transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+      position: relative;
+      z-index: 2;
+    }
+
+    .navbar-brand:hover .navbar-logo {
+      transform: scale(1.35) rotate(360deg);
+      box-shadow: 0 0 35px var(--gold), 0 0 15px rgba(255, 255, 255, 0.6);
+      border-color: #fff;
+    }
+
+    .flower-particle {
+      position: absolute;
+      pointer-events: none;
+      font-size: 24px;
+      z-index: 1;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+      animation: flowerBurst 1.2s ease-out forwards;
+      user-select: none;
+      top: 50%;
+      left: 50%;
+      margin-top: -12px;
+      margin-left: -12px;
+    }
+
+    @keyframes flowerBurst {
+      0% {
+        transform: translate(0, 0) scale(0) rotate(0deg);
+        opacity: 0;
+      }
+
+      20% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1.4) rotate(45deg);
+      }
+
+      100% {
+        transform: translate(var(--tx), var(--ty)) scale(0.5) rotate(var(--tr));
+        opacity: 0;
+      }
     }
 
     @keyframes logoReveal {
@@ -297,8 +358,8 @@
       }
     }
 
-    .navbar-logo:hover {
-      transform: scale(1.05);
+    .navbar-brand:hover .navbar-logo {
+      transform: scale(1.35) rotate(360deg);
     }
 
     .navbar-logo-placeholder {
@@ -427,8 +488,8 @@
       position: absolute;
       inset: 0;
       background: linear-gradient(to bottom,
-          rgba(10, 10, 15, 0.2) 0%,
-          rgba(10, 10, 15, 0.1) 40%,
+          transparent 0%,
+          rgba(10, 10, 15, 0.05) 30%,
           rgba(10, 10, 15, 0.6) 70%,
           rgba(10, 10, 15, 0.95) 100%);
       z-index: 1;
@@ -683,21 +744,21 @@
 
     .product-card {
       position: relative;
+      background: var(--bg-card);
       border-radius: var(--radius-md);
       overflow: hidden;
-      background: var(--bg-card);
       border: 1px solid var(--border-glass);
-      backdrop-filter: blur(20px) saturate(1.2);
-      -webkit-backdrop-filter: blur(20px) saturate(1.2);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       cursor: default;
       opacity: 0;
-      transform: translateY(40px);
+      transform: translateY(40px) scale(0.95);
     }
 
     .product-card.visible {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
     }
 
     .product-card:hover {
@@ -922,14 +983,14 @@
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       text-align: center;
-      transition: all 0.3s ease;
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(40px) scale(0.95);
     }
 
     .feature-card.visible {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
     }
 
     .feature-card:hover {
@@ -982,18 +1043,18 @@
       border: 1px solid var(--border-glass);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      transition: all 0.3s ease;
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       text-decoration: none;
       color: inherit;
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(40px) scale(0.95);
       overflow: hidden;
       /* Ensure content doesn't spill */
     }
 
     .contact-card.visible {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
     }
 
     .contact-card:hover {
@@ -1403,10 +1464,19 @@
 <body>
 
   <!-- Animated Background Layers -->
+  <!-- Parallax Layers -->
   <div class="parallax-bg" id="parallaxBg">
-    <div class="floating-shape shape-1"></div>
-    <div class="floating-shape shape-2"></div>
-    <div class="floating-shape shape-3"></div>
+    <div class="floating-shape" style="width: 400px; height: 400px; background: var(--accent); top: 10%; left: -100px;">
+    </div>
+    <div class="floating-shape" style="width: 300px; height: 300px; background: var(--gold); top: 60%; right: -50px;">
+    </div>
+    <div class="floating-shape" style="width: 250px; height: 250px; background: var(--accent); top: 30%; left: 40%;">
+    </div>
+  </div>
+  <div class="parallax-bg layer-2" id="parallaxBg2">
+    <div class="floating-shape" style="width: 150px; height: 150px; background: white; top: 20%; right: 10%;"></div>
+    <div class="floating-shape"
+      style="width: 200px; height: 200px; background: var(--gold-light); top: 80%; left: 15%;"></div>
   </div>
   <div class="mesh-gradient"></div>
   <div class="grain-overlay"></div>
@@ -1473,10 +1543,11 @@
 
   <!-- Products Section -->
   <section class="section" id="products">
-    <div class="section-header">
-      <div class="section-label">Our Collection</div>
-      <h2 class="section-title">Artificial Flower Catalog</h2>
-      <p class="section-subtitle">Beautiful, long-lasting artificial flowers for every occasion</p>
+    <div class="section-header parallax-el" data-parallax-speed="0.05">
+      <span class="section-badge">Our Collection</span>
+      <h2 class="section-title">Premium Artificial Flowers</h2>
+      <div class="divider"></div>
+      <p class="section-subtitle">Beautiful, long-lasting products for every occasion</p>
     </div>
     <div class="product-grid" id="productGrid">
       <!-- Cards injected by JS -->
@@ -1487,10 +1558,11 @@
 
   <!-- Why Us Section -->
   <section class="section" id="why-us">
-    <div class="section-header">
-      <div class="section-label">Why Choose Us</div>
+    <div class="section-header parallax-el" data-parallax-speed="0.05">
+      <span class="section-badge">Excellence</span>
       <h2 class="section-title">The Mayil blooms Difference</h2>
-      <p class="section-subtitle">Here's what sets our artificial flowers apart</p>
+      <div class="divider"></div>
+      <p class="section-subtitle">Here's what sets our products apart</p>
     </div>
     <div class="features-grid" id="featuresGrid">
       <div class="feature-card">
@@ -1520,9 +1592,10 @@
 
   <!-- Contact Section -->
   <section class="section" id="contact">
-    <div class="section-header">
-      <div class="section-label">Get in Touch</div>
-      <h2 class="section-title">Contact Us</h2>
+    <div class="section-header parallax-el" data-parallax-speed="0.05">
+      <span class="section-badge">Get In Touch</span>
+      <h2 class="section-title">Connect With Our Team</h2>
+      <div class="divider"></div>
       <p class="section-subtitle">Ready to place an order? We'd love to hear from you.</p>
     </div>
     <div class="contact-grid" id="contactGrid">
@@ -1600,13 +1673,52 @@
 
         // Check if logo exists
         const logoHTML = cfg.logo
-          ? `<img src="${cfg.logo}" alt="${cfg.businessName}" class="navbar-logo" onerror="this.outerHTML='<div class=\\'navbar-logo-placeholder\\'>${cfg.businessName.charAt(0)}</div>'">`
+          ? `<img src="${cfg.logo}" alt="${cfg.businessName}" class="navbar-logo" id="mainLogo" onerror="this.outerHTML='<div class=\\'navbar-logo-placeholder\\'>${cfg.businessName.charAt(0)}</div>'">`
           : `<div class="navbar-logo-placeholder">${cfg.businessName.charAt(0)}</div>`;
 
         brand.innerHTML = `
-          ${logoHTML}
+          <div class="logo-wrapper" id="logoWrapper">
+            ${logoHTML}
+          </div>
           <span class="navbar-name">${cfg.businessName}</span>
         `;
+
+        // Flower Shower Effect
+        const logoWrapper = document.getElementById('logoWrapper');
+        let showerInterval = null;
+
+        function spawnFlowers() {
+          const flowerList = ['🌸', '🌼', '🌺', '🌹', '🌻', '💮', '🌷'];
+          const count = 8;
+
+          for (let i = 0; i < count; i++) {
+            const f = document.createElement('div');
+            f.className = 'flower-particle';
+            f.textContent = flowerList[Math.floor(Math.random() * flowerList.length)];
+
+            const angle = Math.random() * Math.PI * 2;
+            const dist = 80 + Math.random() * 100;
+            const tx = (Math.cos(angle) * dist) + 'px';
+            const ty = (Math.sin(angle) * dist) + 'px';
+            const tr = ((Math.random() - 0.5) * 1080) + 'deg';
+
+            f.style.setProperty('--tx', tx);
+            f.style.setProperty('--ty', ty);
+            f.style.setProperty('--tr', tr);
+
+            logoWrapper.appendChild(f);
+            setTimeout(() => f.remove(), 1200);
+          }
+        }
+
+        brand.addEventListener('mouseenter', () => {
+          spawnFlowers(); // Initial burst
+          showerInterval = setInterval(spawnFlowers, 400); // Continuous shower
+        });
+
+        brand.addEventListener('mouseleave', () => {
+          if (showerInterval) clearInterval(showerInterval);
+        });
 
         // Scroll effect
         function handleScroll() {
@@ -1714,10 +1826,19 @@
         }
 
         productEntries.forEach((group, index) => {
-          // Final price is the minimum found in group (usually they same)
+          // finalPrice comes from filename (it is the discounted price)
           const finalPrice = group.prices.length > 0 ? Math.min(...group.prices) : 0;
-          const originalPrice = finalPrice + flatDiscount;
-          const discountPercent = originalPrice > 0 ? Math.round((flatDiscount / originalPrice) * 100) : 0;
+
+          // Calculate originalPrice based on finalPrice and flatDiscount as a percentage
+          // Formula: Original = Final / (1 - (Discount/100))
+          let originalPrice = 0;
+          if (flatDiscount > 0 && flatDiscount < 100) {
+            originalPrice = Math.ceil(finalPrice / (1 - (flatDiscount / 100)));
+          } else {
+            originalPrice = finalPrice;
+          }
+
+          const discountPercent = flatDiscount;
 
           const card = document.createElement('div');
           card.className = 'product-card';
@@ -1938,19 +2059,31 @@
 
       // ─── Parallax Effect ───────────────────────────────────
       function setupParallax() {
-        const bg = document.getElementById('parallaxBg');
+        const bg1 = document.getElementById('parallaxBg');
+        const bg2 = document.getElementById('parallaxBg2');
         let ticking = false;
 
         window.addEventListener('scroll', () => {
           if (!ticking) {
             requestAnimationFrame(() => {
               const scrollY = window.scrollY;
-              bg.style.transform = `translateY(${scrollY * 0.3}px)`;
+              // Two layers moving at different speeds for depth
+              if (bg1) bg1.style.transform = `translateY(${scrollY * 0.15}px) translateZ(0)`;
+              if (bg2) bg2.style.transform = `translateY(${scrollY * 0.4}px) translateZ(0)`;
+
+              // Internal section parallax
+              document.querySelectorAll('.parallax-el').forEach(el => {
+                const speed = el.dataset.parallaxSpeed || 0.1;
+                const rect = el.getBoundingClientRect();
+                const offset = (window.innerHeight / 2 - rect.top) * speed;
+                el.style.transform = `translateY(${offset}px) translateZ(0)`;
+              });
+
               ticking = false;
             });
             ticking = true;
           }
-        });
+        }, { passive: true });
       }
 
       // ─── Update accent color from config ───────────────────

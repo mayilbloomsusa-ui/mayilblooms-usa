@@ -4,7 +4,7 @@ const path = require('path');
 /**
  * CONFIGURATION
  */
-const IMAGES_DIR = path.join(__dirname, 'images');
+const IMAGES_DIR = path.join(__dirname, 'images', 'product');
 const CONFIG_FILE = path.join(__dirname, 'config.js');
 
 // Ignore these images in the product grid (branding, logo, etc.)

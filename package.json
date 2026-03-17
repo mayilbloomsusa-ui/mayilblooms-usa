@@ -5,7 +5,8 @@
     "main": "index.html",
     "scripts": {
         "update": "node update-products.js",
-        "publish": "./publish.sh"
+        "publish": "./publish.sh",
+        "dev": "npx -y http-server -p 8080"
     },
     "keywords": [],
     "author": "Mayil blooms",
