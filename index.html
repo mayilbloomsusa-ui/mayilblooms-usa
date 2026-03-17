@@ -1797,10 +1797,11 @@
           });
         }
         if (contact.email) {
+          const subject = encodeURIComponent("Inquiry from Mayil blooms Catalog");
           items.push({
             icon: '✉️', iconClass: 'email',
             label: 'Email', value: contact.email,
-            href: `mailto:${contact.email}`
+            href: `mailto:${contact.email}?subject=${subject}`
           });
         }
         if (contact.facebook) {
@@ -1836,7 +1837,9 @@
           const card = document.createElement('a');
           card.className = 'contact-card';
           card.href = item.href;
-          card.target = item.iconClass === 'address' || item.iconClass === 'instagram' || item.iconClass === 'youtube' || item.iconClass === 'whatsapp' ? '_blank' : '_self';
+          // Ensure social media and maps open in new tabs, email and phone in self/system handler
+          const newTabIcons = ['facebook', 'instagram', 'youtube', 'whatsapp', 'address'];
+          card.target = newTabIcons.includes(item.iconClass) ? '_blank' : '_self';
           card.rel = 'noopener noreferrer';
           card.style.transitionDelay = `${index * 0.1}s`;
           card.innerHTML = `
