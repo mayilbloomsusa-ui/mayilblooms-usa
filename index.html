@@ -1024,6 +1024,10 @@
       background: linear-gradient(135deg, #EA4335, #C5221F);
     }
 
+    .contact-icon.facebook {
+      background: linear-gradient(135deg, #1877F2, #0866FF);
+    }
+
     .contact-icon.instagram {
       background: linear-gradient(135deg, #E1306C, #F77737, #FCAF45);
     }
@@ -1844,7 +1848,7 @@
         }
         if (contact.facebook) {
           items.push({
-            icon: '🔵', iconClass: 'facebook',
+            icon: '👤', iconClass: 'facebook',
             label: 'Facebook', value: 'Follow us',
             href: contact.facebook.startsWith('http') ? contact.facebook : `https://facebook.com/${contact.facebook}`
           });
