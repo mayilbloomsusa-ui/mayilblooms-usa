@@ -147,35 +147,22 @@
     }
 
     /* ════════════════════════════════════════════════════════
-       PARALLAX WRAPPER
+       BACKGROUND VISUALS
        ════════════════════════════════════════════════════════ */
-    .parallax-bg {
+    .bg-visuals {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       z-index: -3;
-      will-change: transform;
       pointer-events: none;
+      overflow: hidden;
     }
 
-    .parallax-bg.layer-2 {
-      z-index: -2;
-      opacity: 0.6;
-    }
-
-    .parallax-bg .floating-shape {
+    .floating-shape {
       position: absolute;
       border-radius: 50%;
       filter: blur(80px);
       opacity: 0.08;
       animation: floatShape 30s ease-in-out infinite;
-    }
-
-    .layer-2 .floating-shape {
-      filter: blur(40px);
-      opacity: 0.05;
     }
 
     .parallax-bg .shape-1 {
@@ -1463,20 +1450,18 @@
 
 <body>
 
-  <!-- Animated Background Layers -->
-  <!-- Parallax Layers -->
-  <div class="parallax-bg" id="parallaxBg">
+  <!-- Background Visuals -->
+  <div class="bg-visuals">
     <div class="floating-shape" style="width: 400px; height: 400px; background: var(--accent); top: 10%; left: -100px;">
     </div>
     <div class="floating-shape" style="width: 300px; height: 300px; background: var(--gold); top: 60%; right: -50px;">
     </div>
     <div class="floating-shape" style="width: 250px; height: 250px; background: var(--accent); top: 30%; left: 40%;">
     </div>
-  </div>
-  <div class="parallax-bg layer-2" id="parallaxBg2">
     <div class="floating-shape" style="width: 150px; height: 150px; background: white; top: 20%; right: 10%;"></div>
     <div class="floating-shape"
-      style="width: 200px; height: 200px; background: var(--gold-light); top: 80%; left: 15%;"></div>
+      style="width: 200px; height: 200px; background: var(--gold-light); top: 80%; left: 15%;">
+    </div>
   </div>
   <div class="mesh-gradient"></div>
   <div class="grain-overlay"></div>
@@ -1543,7 +1528,7 @@
 
   <!-- Products Section -->
   <section class="section" id="products">
-    <div class="section-header parallax-el" data-parallax-speed="0.05">
+    <div class="section-header">
       <span class="section-badge">Our Collection</span>
       <h2 class="section-title">Premium Artificial Flowers</h2>
       <div class="divider"></div>
@@ -1558,7 +1543,7 @@
 
   <!-- Why Us Section -->
   <section class="section" id="why-us">
-    <div class="section-header parallax-el" data-parallax-speed="0.05">
+    <div class="section-header">
       <span class="section-badge">Excellence</span>
       <h2 class="section-title">The Mayil blooms Difference</h2>
       <div class="divider"></div>
@@ -1592,7 +1577,7 @@
 
   <!-- Contact Section -->
   <section class="section" id="contact">
-    <div class="section-header parallax-el" data-parallax-speed="0.05">
+    <div class="section-header">
       <span class="section-badge">Get In Touch</span>
       <h2 class="section-title">Connect With Our Team</h2>
       <div class="divider"></div>
@@ -2057,34 +2042,6 @@
         });
       }
 
-      // ─── Parallax Effect ───────────────────────────────────
-      function setupParallax() {
-        const bg1 = document.getElementById('parallaxBg');
-        const bg2 = document.getElementById('parallaxBg2');
-        let ticking = false;
-
-        window.addEventListener('scroll', () => {
-          if (!ticking) {
-            requestAnimationFrame(() => {
-              const scrollY = window.scrollY;
-              // Two layers moving at different speeds for depth
-              if (bg1) bg1.style.transform = `translateY(${scrollY * 0.15}px) translateZ(0)`;
-              if (bg2) bg2.style.transform = `translateY(${scrollY * 0.4}px) translateZ(0)`;
-
-              // Internal section parallax
-              document.querySelectorAll('.parallax-el').forEach(el => {
-                const speed = el.dataset.parallaxSpeed || 0.1;
-                const rect = el.getBoundingClientRect();
-                const offset = (window.innerHeight / 2 - rect.top) * speed;
-                el.style.transform = `translateY(${offset}px) translateZ(0)`;
-              });
-
-              ticking = false;
-            });
-            ticking = true;
-          }
-        }, { passive: true });
-      }
 
       // ─── Update accent color from config ───────────────────
       function updateAccentColor() {
@@ -2108,7 +2065,6 @@
           setupScrollAnimations();
         });
 
-        setupParallax();
 
         // Update page title
         document.title = `${catalogConfig.businessName} — ${catalogConfig.tagline || 'Product Catalog'}`;
