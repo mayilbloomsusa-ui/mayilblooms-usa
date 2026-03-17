@@ -1792,12 +1792,12 @@
         const productFilenames = cfg.products || [];
         const flatDiscount = cfg.flatDiscount || 0;
 
-        // Group products by cleaned name
         const groups = {};
         productFilenames.forEach(fn => {
           const name = cleanProductName(fn);
-          if (!groups[name]) groups[name] = { name, images: [], prices: [] };
+          if (!groups[name]) groups[name] = { name, images: [], prices: [], rawFilenames: [] };
           groups[name].images.push((cfg.imagesFolder || 'images') + '/' + fn);
+          groups[name].rawFilenames.push(fn);
           const price = parsePrice(fn);
           if (price !== null) groups[name].prices.push(price);
         });
@@ -1843,6 +1843,19 @@
             sliderHTML = `<div class="product-image-wrapper"><img src="${group.images[0]}" alt="${group.name}"></div>`;
           }
 
+          // Determine variation tag based on filename
+          let variationTag = 'Premium Quality';
+          const allRaws = group.rawFilenames.join(' ').toUpperCase();
+
+          if (allRaws.includes('INCH')) {
+            variationTag = 'Available in 16" and 8" sizes';
+          } else if (allRaws.includes('PIECES') || allRaws.includes('PIECE') || allRaws.includes('PCS')) {
+            const pieceMatch = allRaws.match(/(\d+)\s*(PIECES|PIECE|PCS)/);
+            variationTag = pieceMatch ? `${pieceMatch[1]} Pieces Set` : 'Complete Set';
+          } else {
+            variationTag = 'Handcrafted Design';
+          }
+
           card.innerHTML = `
             <div class="product-image-wrapper">
               ${sliderHTML}
@@ -1858,7 +1871,7 @@
             <div class="product-info">
               <div class="product-name">${group.name}</div>
               <div class="product-tag">Premium Artificial Flower</div>
-              <span class="variation-tag">Available in 16" and 8" sizes</span>
+              <span class="variation-tag">${variationTag}</span>
             </div>
           `;
           grid.appendChild(card);
