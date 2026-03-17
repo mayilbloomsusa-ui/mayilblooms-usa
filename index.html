@@ -986,6 +986,8 @@
       color: inherit;
       opacity: 0;
       transform: translateY(30px);
+      overflow: hidden;
+      /* Ensure content doesn't spill */
     }
 
     .contact-card.visible {
@@ -1046,6 +1048,8 @@
       font-size: 15px;
       font-weight: 500;
       color: var(--text-primary);
+      word-break: break-all;
+      line-height: 1.2;
     }
 
     /* ════════════════════════════════════════════════════════

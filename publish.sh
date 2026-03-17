@@ -7,6 +7,10 @@
 echo "🔍 Step 1: Scanning images and updating product list..."
 node update-products.js
 
+# Ensure identity is local to this project
+git config --local user.name "Mayil blooms"
+git config --local user.email "mayilbloomsusa@gmail.com"
+
 # Check if there are any changes
 if [[ -z $(git status -s) ]]; then
     echo "✅ No new images or changes found. Your website is already up to date!"
@@ -21,7 +25,7 @@ COMMIT_MSG="Catalog Update: $(date +'%Y-%m-%d %H:%M:%S')"
 git commit -m "$COMMIT_MSG"
 
 echo "🚀 Step 3: Pushing to live website (GitHub Pages)..."
-git push origin main
+GIT_SSH_COMMAND="ssh -i ~/.ssh/mayilblooms -o IdentitiesOnly=yes" git push origin main
 
 echo "✨ DONE! Your website is being updated."
-echo "🔗 View it here: https://elumalai25.github.io/mayilblooms-usa/"
+echo "🔗 View it here: https://mayilbloomsusa-ui.github.io/mayilblooms-usa/"
