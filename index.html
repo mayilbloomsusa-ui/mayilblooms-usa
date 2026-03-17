@@ -235,6 +235,20 @@
       }
     }
 
+    @keyframes gradientMove {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
     .navbar-name {
       font-family: var(--font-display);
       font-weight: 800;
@@ -242,11 +256,12 @@
       color: white;
       letter-spacing: 1px;
       text-transform: uppercase;
-      background: linear-gradient(135deg, #fff, #aaa);
+      background: linear-gradient(270deg, var(--gold-light), #fff, var(--gold), #fff);
+      background-size: 200% 200%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      animation: fadeInRight 1s ease forwards;
-      animation-delay: 0.3s;
+      animation: fadeInRight 1s ease forwards, gradientMove 4s ease infinite;
+      animation-delay: 0.3s, 0s;
       opacity: 0;
     }
 
@@ -281,15 +296,7 @@
       flex-shrink: 0;
     }
 
-    .navbar-name {
-      font-family: var(--font-display);
-      font-size: 22px;
-      font-weight: 700;
-      background: linear-gradient(135deg, var(--text-primary), var(--gold-light));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
+
 
     .navbar-links {
       display: flex;
@@ -428,11 +435,12 @@
       font-weight: 800;
       line-height: 1.1;
       margin-bottom: 20px;
-      background: linear-gradient(135deg, #FFF 0%, var(--gold-light) 50%, #FFF 100%);
+      background: linear-gradient(270deg, #FFF, var(--gold-light), #FFF, var(--gold));
+      background-size: 200% 200%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.8));
-      animation: fadeInUp 1s ease 0.5s both;
+      animation: fadeInUp 1s ease 0.5s both, gradientMove 5s ease infinite;
     }
 
     .hero p {
@@ -591,6 +599,11 @@
       font-weight: 700;
       margin-bottom: 16px;
       line-height: 1.2;
+      background: linear-gradient(270deg, #fff, var(--gold-light), #fff, var(--gold));
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientMove 4s ease infinite;
     }
 
     .section-subtitle {
