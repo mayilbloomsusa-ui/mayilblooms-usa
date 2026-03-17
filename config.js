@@ -71,21 +71,21 @@ const catalogConfig = {
     // 4. Price in filename is the FINAL price after discount.
     //
     products: [
-        "Artificial-Jasmine-Bud-Hair-Rubber-Band.jpg",
-        "BLOOMED  MULLIPOO 16INCH STRING_$30 - Copy.jpeg",
-        "BLOOMED JAATHI MALLIPOO 16INCH STRING_$30 - Copy.jpeg",
-        "BLOOMED JASMINE MALLIPOO 16INCH_$35.jpg",
-        "CLOSED MALLIPOO STRING 16INCH_$35 - Copy.jpeg",
-        "CLOSED MALLIPOO STRING 16INCH_$35.webp",
-        "MALLI CENTER MEDIUM HAIR CLIP BACK_$8.webp",
-        "MALLI CENTER MEDIUM HAIR CLIP FRONT_$8.webp",
-        "Realistic Jasmine 9 pieces Jadai Set full set_$40.webp",
-        "Realistic Jasmine 9 pieces Jadai Set.webp",
-        "Realistic Jasmine Hair U Pin_$4.webp",
-        "closed mullaiPOO STRING 16 INCH_$35(1).webp",
-        "closed mullaiPOO STRING 16 INCH_$35.webp",
-        "jathi-poo-$30.jpg"
-    ],
+    "Artificial-Jasmine-Bud-Hair-Rubber-Band.jpg",
+    "BLOOMED  MULLIPOO 16INCH STRING_$30 - Copy.jpeg",
+    "BLOOMED JAATHI MALLIPOO 16INCH STRING_$30 - Copy.jpeg",
+    "BLOOMED JASMINE MALLIPOO 16INCH_$35.jpg",
+    "CLOSED MALLIPOO STRING 16INCH_$35 - Copy.jpeg",
+    "CLOSED MALLIPOO STRING 16INCH_$35.webp",
+    "MALLI CENTER MEDIUM HAIR CLIP BACK_$8.webp",
+    "MALLI CENTER MEDIUM HAIR CLIP FRONT_$8.webp",
+    "Realistic Jasmine 9 pieces Jadai Set full set_$40.webp",
+    "Realistic Jasmine 9 pieces Jadai Set.webp",
+    "Realistic Jasmine Hair U Pin_$4.webp",
+    "closed mullaiPOO STRING 16 INCH_$35(1).webp",
+    "closed mullaiPOO STRING 16 INCH_$35.webp",
+    "jathi-poo-$30.jpg"
+  ],
 
     // ─── Appearance ───────────────────────────────────────────
     accentColor: "#C8102E",

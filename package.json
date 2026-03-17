@@ -1,0 +1,13 @@
+{
+    "name": "mayilblooms-catalog",
+    "version": "1.0.0",
+    "description": "Premium Artificial Flowers Catalog",
+    "main": "index.html",
+    "scripts": {
+        "update": "node update-products.js",
+        "publish": "./publish.sh"
+    },
+    "keywords": [],
+    "author": "Mayil blooms",
+    "license": "ISC"
+}
