@@ -1422,13 +1422,6 @@
     </ul>
   </nav>
 
-  <!-- Festival Banner -->
-  <div id="festivalBanner" style="display:none;" class="hero-badge"
-    style="margin: 0; border-radius: 0; width: 100%; justify-content: center; position: relative; z-index: 1001; margin-top: 80px;">
-    <span class="dot"></span>
-    <span id="festivalText">Festival Greeting</span>
-  </div>
-
   <!-- Hero Section -->
   <section class="hero" id="hero">
     <div class="hero-slides" id="heroSlides">
@@ -1599,22 +1592,6 @@
         return str.replace(/\b\w/g, c => c.toUpperCase());
       }
 
-      // ─── Build Festival Banner ─────────────────────────────
-      function buildFestivalBanner() {
-        const banner = document.getElementById('festivalBanner');
-        const text = document.getElementById('festivalText');
-        const cfg = catalogConfig;
-
-        if (cfg.festivalMessage && cfg.festivalMessage.trim() !== "") {
-          text.textContent = cfg.festivalMessage;
-          banner.style.display = 'flex';
-          document.body.style.paddingTop = banner.offsetHeight + 'px';
-        } else {
-          banner.style.display = 'none';
-          document.body.style.paddingTop = '0px';
-        }
-      }
-
       // ─── Build Navbar ──────────────────────────────────────
       function buildNavbar() {
         const brand = document.getElementById('navbarBrand');
@@ -1633,14 +1610,10 @@
         // Scroll effect
         window.addEventListener('scroll', () => {
           const navbar = document.getElementById('navbar');
-          const banner = document.getElementById('festivalBanner');
           const threshold = 80;
 
           if (window.scrollY > threshold) {
             navbar.classList.add('scrolled');
-            if (banner && banner.style.display !== 'none') {
-              navbar.style.top = '0px';
-            }
           } else {
             navbar.classList.remove('scrolled');
           }
@@ -1681,8 +1654,6 @@
             const data = slides[index];
             const titleEl = document.getElementById('heroTitle');
             const subEl = document.getElementById('heroSubtitle');
-            const festivalEl = document.getElementById('festivalText');
-            const banner = document.getElementById('festivalBanner');
 
             // Fade out text
             heroContent.classList.remove('active');
@@ -1690,15 +1661,6 @@
             setTimeout(() => {
               if (data.title) titleEl.textContent = data.title;
               if (data.subtitle) subEl.textContent = data.subtitle;
-
-              // Handle mapping for festival message
-              const festMsg = data.festivalMessage || cfg.festivalMessageFallback;
-              if (festMsg) {
-                festivalEl.textContent = festMsg;
-                banner.style.display = 'flex';
-              } else {
-                banner.style.display = 'none';
-              }
 
               // Fade in text
               heroContent.classList.add('active');
@@ -1721,11 +1683,6 @@
           const data = slides[0];
           if (data.title) document.getElementById('heroTitle').textContent = data.title;
           if (data.subtitle) document.getElementById('heroSubtitle').textContent = data.subtitle;
-          const festMsg = data.festivalMessage || cfg.festivalMessageFallback;
-          if (festMsg) {
-            document.getElementById('festivalText').textContent = festMsg;
-            document.getElementById('festivalBanner').style.display = 'flex';
-          }
         }
       }
 
@@ -1987,7 +1944,6 @@
       // ─── Initialize ────────────────────────────────────────
       function init() {
         updateAccentColor();
-        buildFestivalBanner();
         buildNavbar();
         buildHero();
         buildProducts();

@@ -24,9 +24,6 @@ const catalogConfig = {
     tagline: "Premium Artificial Flowers — Delivery Available within USA",
     description: "Wholesale & retail supplier of high-quality artificial flowers, garlands, and decorations. Long-lasting beauty that never wilts.",
 
-    // Festival Message (Global fallback - set to empty string "" to hide)
-    festivalMessageFallback: "",
-
     // Path to your logo image (place the file in the images/ folder)
     logo: "images/brand logo.jpeg",
 
@@ -50,14 +47,12 @@ const catalogConfig = {
         {
             image: "images/BLOOMED JASMINE MALLIPOO 16INCH_$35.jpg",
             title: "Exquisite Artificial Flowers",
-            subtitle: "Premium quality that lasts forever — for temples & weddings",
-            festivalMessage: "Special Offer for Telugu New Year!"
+            subtitle: "Premium quality that lasts forever — for temples & weddings"
         },
         {
             image: "images/CLOSED MALLIPOO STRING 16INCH_$35.webp",
             title: "Long Lasting Garlands",
-            subtitle: "Handcrafted beauty that never wilts",
-            festivalMessage: "Blessings for Ramadan Month"
+            subtitle: "Handcrafted beauty that never wilts"
         }
     ],
 
