@@ -39,15 +39,34 @@
     body {
       font-family: var(--font-body);
       background:
-        radial-gradient(ellipse at 20% 50%, rgba(200, 16, 46, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(212, 168, 83, 0.1) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 80%, rgba(120, 40, 80, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 20% 50%, rgba(200, 16, 46, 0.18) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(212, 168, 83, 0.14) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, rgba(120, 40, 80, 0.15) 0%, transparent 50%),
         var(--bg-dark);
-      background-attachment: fixed;
+      background-size: 200% 200%;
+      animation: bgGradientShift 20s ease infinite;
       color: var(--text-primary);
       line-height: 1.6;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
+    }
+
+    @keyframes bgGradientShift {
+      0% {
+        background-position: 0% 0%;
+      }
+      25% {
+        background-position: 100% 50%;
+      }
+      50% {
+        background-position: 50% 100%;
+      }
+      75% {
+        background-position: 0% 50%;
+      }
+      100% {
+        background-position: 0% 0%;
+      }
     }
 
     /* ════════════════════════════════════════════════════════
@@ -1192,11 +1211,13 @@
       }
 
       .features-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
       }
 
       .contact-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
       }
 
       .fab-container {
