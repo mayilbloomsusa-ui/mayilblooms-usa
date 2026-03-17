@@ -66,30 +66,30 @@ const catalogConfig = {
   // 4. Price in filename is the FINAL price after discount.
   //
   categories: [
-    {
-      name: "Flowers",
-      id: "flowers",
-      products: [
-        "flowers/BLOOMED  MULLIPOO 16INCH STRING_$28 - Copy.jpeg",
-        "flowers/BLOOMED JAATHI MALLIPOO 16INCH STRING_$28 - Copy.jpeg",
-        "flowers/BLOOMED JASMINE MALLIPOO 16INCH_$25.jpg",
-        "flowers/CLOSED MALLIPOO STRING 16INCH_$28 - Copy.jpeg",
-        "flowers/CLOSED MALLIPOO STRING 16INCH_$28.png",
-        "flowers/closed mullaiPOO STRING 16 INCH_$28.png",
-        "flowers/closed mullaiPOO STRING 16 INCH_$28.webp"
-      ]
-    },
-    {
-      name: "Featured Crafts",
-      id: "crafts",
-      products: [
-        "crafts/Artificial Jasmine Bud Hair Rubber Band_$5_*.jpg",
-        "crafts/MALLI CENTER MEDIUM HAIR CLIP_$8_*.png",
-        "crafts/Realistic Jasmine 9 pieces Jadai Set_$40_*.png",
-        "crafts/Realistic Jasmine Hair U Pin_$4_*.png"
-      ]
-    }
-  ],
+  {
+    name: "Flowers",
+    id: "flowers",
+    products: [
+      "flowers/BLOOMED  MULLIPOO 16INCH STRING_$28 - Copy.jpeg",
+      "flowers/BLOOMED JAATHI MALLIPOO 16INCH STRING_$28 - Copy.jpeg",
+      "flowers/BLOOMED JASMINE MALLIPOO 16INCH_$25.jpg",
+      "flowers/CLOSED MALLIPOO STRING 16INCH_$28 - Copy.jpeg",
+      "flowers/CLOSED MALLIPOO STRING 16INCH_$28.png",
+      "flowers/closed mullaiPOO STRING 16 INCH_$28.png",
+      "flowers/closed mullaiPOO STRING 16 INCH_$28.webp"
+    ]
+  },
+  {
+    name: "Featured Crafts",
+    id: "crafts",
+    products: [
+      "crafts/Artificial Jasmine Bud Hair Rubber Band_$5_*.jpg",
+      "crafts/MALLI CENTER MEDIUM HAIR CLIP_$8_*.png",
+      "crafts/Realistic Jasmine 9 pieces Jadai Set_$40_*.png",
+      "crafts/Realistic Jasmine Hair U Pin_$4_*.png"
+    ]
+  }
+],
 
   // ─── Appearance ───────────────────────────────────────────
   accentColor: "#C8102E",
