@@ -680,9 +680,9 @@
     .unavailable-badge {
       position: absolute;
       inset: 0;
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(12px) saturate(1.5);
-      -webkit-backdrop-filter: blur(12px) saturate(1.5);
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -694,7 +694,7 @@
       font-size: 20px;
       padding: 20px;
       text-align: center;
-      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.9), 0 2px 6px rgba(0, 0, 0, 0.8);
+      text-shadow: 0 4px 30px rgba(0, 0, 0, 1), 0 2px 10px rgba(0, 0, 0, 1);
     }
 
     .unavailable .product-image-wrapper img {
@@ -1772,7 +1772,7 @@
                 <div class="product-image-wrapper">
                   ${sliderHTML}
                   <div class="product-image-overlay"></div>
-                  ${isGroupUnavailable ? '<div class="unavailable-badge"><span>Launching soon</span></div>' : ''}
+                  ${isGroupUnavailable ? '<div class="unavailable-badge"><span>Coming soon</span></div>' : ''}
                   ${flatDiscount > 0 && !isGroupUnavailable ? `<div class="discount-tag">${flatDiscount}% OFF</div>` : ''}
                   ${finalPrice > 0 ? `
                     <div class="product-price-badge">

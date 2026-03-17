@@ -42,6 +42,15 @@ function main() {
         }
     });
 
+    // Sort categories: Flowers first, crafts second
+    categories.sort((a, b) => {
+        if (a.id === 'flowers') return -1;
+        if (b.id === 'flowers') return 1;
+        if (a.id === 'crafts') return -1;
+        if (b.id === 'crafts') return 1;
+        return 0;
+    });
+
     const rootFiles = items.filter(item => item.isFile() && isImage(item.name))
         .map(item => item.name);
 

@@ -67,16 +67,6 @@ const catalogConfig = {
     //
     categories: [
   {
-    name: "Featured Crafts",
-    id: "crafts",
-    products: [
-      "crafts/Artificial Jasmine Bud Hair Rubber Band_$5_*.jpg",
-      "crafts/MALLI CENTER MEDIUM HAIR CLIP_$8_*.png",
-      "crafts/Realistic Jasmine 9 pieces Jadai Set_$40_*.png",
-      "crafts/Realistic Jasmine Hair U Pin_$4_*.png"
-    ]
-  },
-  {
     name: "Flowers",
     id: "flowers",
     products: [
@@ -87,6 +77,16 @@ const catalogConfig = {
       "flowers/CLOSED MALLIPOO STRING 16INCH_$35.png",
       "flowers/closed mullaiPOO STRING 16 INCH_$35(1).webp",
       "flowers/closed mullaiPOO STRING 16 INCH_$35.png"
+    ]
+  },
+  {
+    name: "Featured Crafts",
+    id: "crafts",
+    products: [
+      "crafts/Artificial Jasmine Bud Hair Rubber Band_$5_*.jpg",
+      "crafts/MALLI CENTER MEDIUM HAIR CLIP_$8_*.png",
+      "crafts/Realistic Jasmine 9 pieces Jadai Set_$40_*.png",
+      "crafts/Realistic Jasmine Hair U Pin_$4_*.png"
     ]
   }
 ],
