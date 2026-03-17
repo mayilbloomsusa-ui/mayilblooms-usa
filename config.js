@@ -70,13 +70,13 @@ const catalogConfig = {
     name: "Flowers",
     id: "flowers",
     products: [
-      "flowers/BLOOMED  MULLIPOO 16INCH STRING_$30 - Copy.jpeg",
-      "flowers/BLOOMED JAATHI MALLIPOO 16INCH STRING_$30 - Copy.jpeg",
-      "flowers/BLOOMED JASMINE MALLIPOO 16INCH_$35.jpg",
-      "flowers/CLOSED MALLIPOO STRING 16INCH_$35 - Copy.jpeg",
-      "flowers/CLOSED MALLIPOO STRING 16INCH_$35.png",
-      "flowers/closed mullaiPOO STRING 16 INCH_$35(1).webp",
-      "flowers/closed mullaiPOO STRING 16 INCH_$35.png"
+      "flowers/BLOOMED  MULLIPOO 16INCH STRING_$28 - Copy.jpeg",
+      "flowers/BLOOMED JAATHI MALLIPOO 16INCH STRING_$28 - Copy.jpeg",
+      "flowers/BLOOMED JASMINE MALLIPOO 16INCH_$25.jpg",
+      "flowers/CLOSED MALLIPOO STRING 16INCH_$28 - Copy.jpeg",
+      "flowers/CLOSED MALLIPOO STRING 16INCH_$28.png",
+      "flowers/closed mullaiPOO STRING 16 INCH_$28.png",
+      "flowers/closed mullaiPOO STRING 16 INCH_$28.webp"
     ]
   },
   {
