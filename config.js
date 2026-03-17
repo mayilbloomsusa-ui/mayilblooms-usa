@@ -67,13 +67,13 @@ const catalogConfig = {
     //
     categories: [
   {
-    name: "Value Added Crafts",
+    name: "Featured Crafts",
     id: "crafts",
     products: [
-      "crafts/Artificial Jasmine Bud Hair Rubber Band_$5.jpg",
-      "crafts/MALLI CENTER MEDIUM HAIR CLIP_$8.png",
-      "crafts/Realistic Jasmine 9 pieces Jadai Set_$40.png",
-      "crafts/Realistic Jasmine Hair U Pin_$4.png"
+      "crafts/Artificial Jasmine Bud Hair Rubber Band_$5_*.jpg",
+      "crafts/MALLI CENTER MEDIUM HAIR CLIP_$8_*.png",
+      "crafts/Realistic Jasmine 9 pieces Jadai Set_$40_*.png",
+      "crafts/Realistic Jasmine Hair U Pin_$4_*.png"
     ]
   },
   {

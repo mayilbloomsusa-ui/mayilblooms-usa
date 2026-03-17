@@ -34,7 +34,7 @@ function main() {
 
             if (files.length > 0) {
                 categories.push({
-                    name: catName === 'crafts' ? 'Value Added Crafts' : (catName.charAt(0).toUpperCase() + catName.slice(1)),
+                    name: catName === 'crafts' ? 'Featured Crafts' : (catName.charAt(0).toUpperCase() + catName.slice(1)),
                     id: catName,
                     products: files
                 });
