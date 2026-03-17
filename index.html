@@ -731,21 +731,12 @@
 
     .product-card {
       position: relative;
-      background: var(--bg-card);
+      background: rgba(255, 255, 255, 0.08);
       border-radius: var(--radius-md);
       overflow: hidden;
       border: 1px solid var(--border-glass);
-      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.3s ease;
       cursor: default;
-      opacity: 0;
-      transform: translateY(40px) scale(0.95);
-    }
-
-    .product-card.visible {
-      opacity: 1;
-      transform: translateY(0) scale(1);
     }
 
     .product-card:hover {
@@ -965,19 +956,10 @@
     .feature-card {
       padding: 32px;
       border-radius: var(--radius-md);
-      background: var(--bg-card);
+      background: rgba(255, 255, 255, 0.08);
       border: 1px solid var(--border-glass);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
       text-align: center;
-      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      opacity: 0;
-      transform: translateY(40px) scale(0.95);
-    }
-
-    .feature-card.visible {
-      opacity: 1;
-      transform: translateY(0) scale(1);
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.3s ease;
     }
 
     .feature-card:hover {
@@ -1026,22 +1008,13 @@
       gap: 20px;
       padding: 24px 28px;
       border-radius: var(--radius-md);
-      background: var(--bg-card);
+      background: rgba(255, 255, 255, 0.08);
       border: 1px solid var(--border-glass);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.3s ease;
       text-decoration: none;
       color: inherit;
-      opacity: 0;
-      transform: translateY(40px) scale(0.95);
       overflow: hidden;
       /* Ensure content doesn't spill */
-    }
-
-    .contact-card.visible {
-      opacity: 1;
-      transform: translateY(0) scale(1);
     }
 
     .contact-card:hover {
@@ -2036,24 +2009,6 @@
         document.getElementById('footerCopy').innerHTML = `&copy; ${new Date().getFullYear()} ${cfg.businessName}. All rights reserved.`;
       }
 
-      // ─── Scroll Animations ─────────────────────────────────
-      function setupScrollAnimations() {
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-            }
-          });
-        }, {
-          threshold: 0.1,
-          rootMargin: '0px 0px -40px 0px'
-        });
-
-        // Observe product cards and feature cards
-        document.querySelectorAll('.product-card, .feature-card, .contact-card').forEach(el => {
-          observer.observe(el);
-        });
-      }
 
 
       // ─── Update accent color from config ───────────────────
@@ -2073,10 +2028,6 @@
         buildFAB();
         buildFooter();
 
-        // Delay scroll animations to allow DOM to settle
-        requestAnimationFrame(() => {
-          setupScrollAnimations();
-        });
 
 
         // Update page title
