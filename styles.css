@@ -69,6 +69,39 @@
       }
     }
 
+    .icon-animate {
+      display: inline-block;
+      animation: iconFlow 4s ease-in-out infinite;
+      transform-origin: center;
+      transition: all 0.3s ease;
+    }
+
+    .stat-number .icon-animate {
+      background: inherit;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    @keyframes iconFlow {
+      0%, 100% {
+        transform: rotate(0deg) scale(1);
+        filter: drop-shadow(0 0 5px rgba(212, 168, 83, 0.2));
+      }
+      25% {
+        transform: rotate(5deg) scale(1.05);
+        filter: drop-shadow(0 0 8px rgba(212, 168, 83, 0.4));
+      }
+      50% {
+        transform: rotate(0deg) scale(1.1);
+        filter: drop-shadow(0 0 12px rgba(212, 168, 83, 0.5));
+      }
+      75% {
+        transform: rotate(-5deg) scale(1.05);
+        filter: drop-shadow(0 0 8px rgba(212, 168, 83, 0.4));
+      }
+    }
+
     /* ════════════════════════════════════════════════════════
        NAVIGATION BAR
        ════════════════════════════════════════════════════════ */
