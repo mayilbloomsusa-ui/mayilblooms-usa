@@ -16,7 +16,7 @@
       --gold: #D4A853;
       --gold-light: #F0D48A;
       --bg-dark: #0a0a0f;
-      --bg-card: rgba(255, 255, 255, 0.06);
+      --bg-card: rgba(195, 59, 59, 0.06);
       --bg-card-hover: rgba(255, 255, 255, 0.12);
       --text-primary: #FFFFFF;
       --text-secondary: rgba(255, 255, 255, 0.7);
@@ -71,34 +71,90 @@
 
     .icon-animate {
       display: inline-block;
-      animation: iconFlow 4s ease-in-out infinite;
-      transform-origin: center;
-      transition: all 0.3s ease;
+      animation: iconFlow 3s ease-in-out infinite;
+      transform-origin: center center;
+      /* Avoid transition on transform — it can dampen keyframe motion */
     }
 
     .stat-number .icon-animate {
-      background: inherit;
+      /* Same gradient as .stat-number; inherit often fails for clipped text */
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
       -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
       background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     @keyframes iconFlow {
       0%, 100% {
-        transform: rotate(0deg) scale(1);
-        filter: drop-shadow(0 0 5px rgba(212, 168, 83, 0.2));
+        transform: rotate(0deg) scale(1) translateY(0);
+        filter: drop-shadow(0 2px 6px rgba(212, 168, 83, 0.35));
       }
       25% {
-        transform: rotate(5deg) scale(1.05);
-        filter: drop-shadow(0 0 8px rgba(212, 168, 83, 0.4));
+        transform: rotate(8deg) scale(1.08) translateY(-3px);
+        filter: drop-shadow(0 4px 14px rgba(212, 168, 83, 0.55));
       }
       50% {
-        transform: rotate(0deg) scale(1.1);
-        filter: drop-shadow(0 0 12px rgba(212, 168, 83, 0.5));
+        transform: rotate(0deg) scale(1.12) translateY(-5px);
+        filter: drop-shadow(0 6px 18px rgba(212, 168, 83, 0.65));
       }
       75% {
-        transform: rotate(-5deg) scale(1.05);
-        filter: drop-shadow(0 0 8px rgba(212, 168, 83, 0.4));
+        transform: rotate(-8deg) scale(1.08) translateY(-3px);
+        filter: drop-shadow(0 4px 14px rgba(212, 168, 83, 0.55));
+      }
+    }
+
+    /* Contact row + FAB chips: white SVGs get a gentle bob + glow */
+    .contact-icon > svg,
+    .fab-action-icon > svg {
+      display: block;
+      animation: iconSvgBob 2.8s ease-in-out infinite;
+      transform-origin: center center;
+    }
+
+    .contact-card:nth-child(3n + 1) .contact-icon > svg {
+      animation-delay: 0s;
+    }
+
+    .contact-card:nth-child(3n + 2) .contact-icon > svg {
+      animation-delay: 0.35s;
+    }
+
+    .contact-card:nth-child(3n) .contact-icon > svg {
+      animation-delay: 0.7s;
+    }
+
+    @keyframes iconSvgBob {
+      0%, 100% {
+        transform: translateY(0) scale(1);
+        filter: drop-shadow(0 0 0 rgba(255, 255, 255, 0));
+      }
+      50% {
+        transform: translateY(-4px) scale(1.07);
+        filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.35)) brightness(1.12);
+      }
+    }
+
+    /* Main FAB emoji: small float only (avoids clashing with .fab-pulse ring) */
+    .fab-main .icon-animate {
+      animation: iconFlowFab 3.2s ease-in-out infinite;
+    }
+
+    @keyframes iconFlowFab {
+      0%, 100% {
+        transform: translateY(0) scale(1);
+        filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+      }
+      50% {
+        transform: translateY(-3px) scale(1.06);
+        filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.28));
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .icon-animate,
+      .contact-icon > svg,
+      .fab-action-icon > svg {
+        animation: none !important;
       }
     }
 
@@ -1268,6 +1324,51 @@
 
       .hero h1 {
         font-size: 32px;
+      }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       PRINT/PDF EXPORT FIXES
+       ════════════════════════════════════════════════════════ */
+    @media print {
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+      }
+
+      .navbar,
+      .fab-container,
+      .hero-scroll-indicator,
+      .side-menu,
+      .side-menu-overlay {
+        display: none !important;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg-dark) !important;
+      }
+
+      .section {
+        page-break-inside: avoid;
+        padding: 40px 24px;
+      }
+
+      .hero {
+        height: auto !important;
+        min-height: 50vh;
+      }
+
+      .product-card {
+        break-inside: avoid;
+      }
+      
+      /* Ensure images are visible */
+      img {
+        display: block;
+        max-width: 100%;
       }
     }
 

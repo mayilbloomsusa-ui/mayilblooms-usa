@@ -83,10 +83,22 @@ const catalogConfig = {
     name: "Featured Crafts",
     id: "crafts",
     products: [
-      "crafts/Artificial Jasmine Bud Hair Rubber Band_$5_*.jpg",
-      "crafts/MALLI CENTER MEDIUM HAIR CLIP_$8_*.png",
-      "crafts/Realistic Jasmine 9 pieces Jadai Set_$40_*.png",
-      "crafts/Realistic Jasmine Hair U Pin_$4_*.png"
+      "crafts/Artificial Jasmine Bud Hair Rubber Band_$5.jpg",
+      "crafts/MALLI CENTER MEDIUM HAIR CLIP_$8.png",
+      "crafts/Realistic Jasmine 9 pieces Jadai Set_$40.png",
+      "crafts/Realistic Jasmine Hair U Pin_$4.png",
+      "crafts/CLOSED MULLAI WITH ROSE HAIR CLIP FRONT_$4.jpeg",
+      "crafts/CLOSED MULLAI WITH ROSE SMALL HAIR BACK CLIP_$4.jpeg",
+      "crafts/JASMINE ROSE ALIGATOR CLIP BACK_$5.jpeg",
+      "crafts/JASMINE ROSE ALIGATOR CLIP FRONT_$5.jpeg",
+      "crafts/JASMINE WITH ROSE HAIR CLIP BACK_$5.jpeg",
+      "crafts/JASMINE WITH ROSE HAIR CLIP FRONT_$5.jpeg",
+      "crafts/MULLAI U PIN BACK_$4.jpeg",
+      "crafts/MULLAI U PIN FRONT_$4.jpeg",
+      "crafts/MULLAI WITH ROSE ALIGATOR CLIP BACK_$5.jpeg",
+      "crafts/MULLAI WITH ROSE ALIGATOR CLIP FRONT_$5.jpeg",
+      "crafts/MULLAI WITH ROSE HAIR BAND BACK_$5.jpeg",
+      "crafts/MULLAI WITH ROSE HAIR BAND FRONT_$5.jpeg"
     ]
   }
 ],
