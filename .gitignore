@@ -4,3 +4,4 @@ node_modules
 .agents
 .cursor
 *.log
+env.js

@@ -45,14 +45,19 @@ const catalogConfig = {
   // These cycle at the top and synchronize with titles and festival messages!
   heroSlides: [
     {
-      image: "images/product/flowers/BLOOMED JASMINE MALLIPOO 16INCH_$25.jpg",
+      image: "http://localhost:9000/mayilblossom/products/flowers/BLOOMED JASMINE MALLIPOO 16INCH.jpg",
       title: "Exquisite Artificial Flowers",
       subtitle: "Premium quality that lasts forever — for temples & weddings"
     },
     {
-      image: "images/product/flowers/CLOSED MALLIPOO STRING 16INCH_$28.png",
+      image: "http://localhost:9000/mayilblossom/products/flowers/CLOSED MALLIPOO STRING 16INCH-1.jpeg",
       title: "Long Lasting Garlands",
       subtitle: "Handcrafted beauty that never wilts"
+    },
+    {
+      image: "http://localhost:9000/mayilblossom/products/crafts/Realistic Jasmine 9 pieces Jadai Set full set.webp",
+      title: "Specialty Hair Crafts",
+      subtitle: "Beautifully crafted jasmine accessories for every occasion"
     }
   ],
 
@@ -107,4 +112,9 @@ const catalogConfig = {
   accentColor: "#C8102E",
   currency: "$",
   imagesFolder: "images/product",
+  apiUrl: (typeof window !== 'undefined' && window.ENV && window.ENV.API_URL)
+    ? window.ENV.API_URL
+    : (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+        ? 'http://localhost:8080/api'
+        : 'https://api.mayilblossoms.com/api'), // Production URL fallback
 };
