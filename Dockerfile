@@ -1,10 +1,14 @@
 FROM nginx:alpine
 
-# Remove default nginx static assets
-RUN rm -rf /usr/share/nginx/html/*
+# Remove default nginx static assets and default site config
+RUN rm -rf /usr/share/nginx/html/* && \
+    rm -f /etc/nginx/conf.d/default.conf
 
 # Copy the static catalog files to the nginx html directory
 COPY . /usr/share/nginx/html
+
+# Install our custom nginx config (proper cache-control headers for all asset types)
+COPY nginx.conf /etc/nginx/conf.d/catalog.conf
 
 # Production env.js — overrides the dev version
 # Uses relative /api path since everything is served from the same IP:80
