@@ -30,6 +30,15 @@ const catalogConfig = {
   // ─── Pricing & Discounts ──────────────────────────────────
   flatDiscount: 30,
 
+  // Set to true to show the Credit Card (Stripe) payment option at checkout.
+  // Set to false to hide Credit Card checkout and only allow Cash on Delivery.
+  enableStripePayment: true,
+
+  // ─── Taxes & Shipping ──────────────────────────────────────
+  taxPercentage: 7, // Tax percentage applied at checkout (e.g., 7 for 7%)
+  deliveryFee: 7.99, // Base delivery fee for shipping
+  freeShippingThreshold: 100, // Free shipping if subtotal is greater than or equal to this amount
+
   // ─── Contact Details ──────────────────────────────────────
   contactDetails: {
     phone: "+1 9472759100",
@@ -43,19 +52,25 @@ const catalogConfig = {
 
   // ─── Hero Banner Slides ───────────────────────────────────
   // These cycle at the top and synchronize with titles and festival messages!
+  // Image URLs are resolved dynamically based on environment:
+  //   - Local: http://localhost:9000/mayilblossom/...
+  //   - Prod:  /s3/mayilblossom/... (proxied by Caddy to MinIO)
   heroSlides: [
     {
-      image: "http://localhost:9000/mayilblossom/products/flowers/BLOOMED JASMINE MALLIPOO 16INCH.jpg",
+      image: ((typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'))
+        ? "http://localhost:9000" : "/s3") + "/mayilblossom/products/flowers/BLOOMED%20JASMINE%20MALLIPOO%2016INCH.jpg",
       title: "Exquisite Artificial Flowers",
       subtitle: "Premium quality that lasts forever — for temples & weddings"
     },
     {
-      image: "http://localhost:9000/mayilblossom/products/flowers/CLOSED MALLIPOO STRING 16INCH-1.jpeg",
+      image: ((typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'))
+        ? "http://localhost:9000" : "/s3") + "/mayilblossom/products/flowers/CLOSED%20MALLIPOO%20STRING%2016INCH-1.jpeg",
       title: "Long Lasting Garlands",
       subtitle: "Handcrafted beauty that never wilts"
     },
     {
-      image: "http://localhost:9000/mayilblossom/products/crafts/Realistic Jasmine 9 pieces Jadai Set full set.webp",
+      image: ((typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'))
+        ? "http://localhost:9000" : "/s3") + "/mayilblossom/products/crafts/Realistic%20Jasmine%209%20pieces%20Jadai%20Set%20full%20set.webp",
       title: "Specialty Hair Crafts",
       subtitle: "Beautifully crafted jasmine accessories for every occasion"
     }
@@ -116,5 +131,5 @@ const catalogConfig = {
     ? window.ENV.API_URL
     : (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
         ? 'http://localhost:8080/api'
-        : 'https://api.mayilblossoms.com/api'), // Production URL fallback
+        : '/api'), // Production: relative path (same IP, proxied by Caddy)
 };

@@ -6,7 +6,7 @@
     "scripts": {
         "update": "node update-products.js",
         "publish": "./publish.sh",
-        "dev": "npx -y http-server -p 3001"
+        "dev": "npx -y http-server -p 3001 -c-1"
     },
     "keywords": [],
     "author": "Mayil blooms",
