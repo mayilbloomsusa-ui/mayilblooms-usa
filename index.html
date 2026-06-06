@@ -2427,6 +2427,21 @@
             pickupLabel.classList.remove('active');
             const addrSec = document.getElementById('checkoutShippingAddressSection');
             if (addrSec) addrSec.style.display = 'block';
+            // COD not available for courier — hide it and switch payment if needed
+            const codRow = document.getElementById('labelPaymentCOD');
+            if (codRow) {
+              codRow.style.display = 'none';
+              if (checkoutPayment === 'COD') {
+                // Auto-switch to Zelle (or Stripe if available)
+                const stripeRow = document.getElementById('labelPaymentStripe');
+                const zelleRow = document.getElementById('labelPaymentZelle');
+                if (stripeRow) {
+                  stripeRow.click();
+                } else if (zelleRow) {
+                  zelleRow.click();
+                }
+              }
+            }
             updateCartSummary();
           });
           pickupLabel.addEventListener('click', () => {
@@ -2435,6 +2450,9 @@
             courierLabel.classList.remove('active');
             const addrSec = document.getElementById('checkoutShippingAddressSection');
             if (addrSec) addrSec.style.display = 'none';
+            // Restore COD option for pickup
+            const codRow = document.getElementById('labelPaymentCOD');
+            if (codRow) codRow.style.display = '';
             updateCartSummary();
           });
         }
@@ -2482,6 +2500,21 @@
         }
         mountStripeCardElement();
         updateCartSummary();
+
+        // Apply initial COD visibility based on pre-selected shipping method
+        if (checkoutShipping === 'COURIER') {
+          const codRow = document.getElementById('labelPaymentCOD');
+          if (codRow) {
+            codRow.style.display = 'none';
+            // If COD was pre-selected, auto-switch to first available option
+            if (checkoutPayment === 'COD') {
+              const stripeRow = document.getElementById('labelPaymentStripe');
+              const zelleRow = document.getElementById('labelPaymentZelle');
+              if (stripeRow) stripeRow.click();
+              else if (zelleRow) zelleRow.click();
+            }
+          }
+        }
       }
 
       function mountStripeCardElement() {
