@@ -395,6 +395,47 @@
     </div>
   </div>
 
+
+  <!-- Product Detail Modal -->
+  <div class="modal-overlay" id="productDetailModal">
+    <div class="modal-content product-detail-content">
+      <div class="modal-header product-detail-header">
+        <div>
+          <div class="product-detail-tag" id="pdTag">Premium Flower</div>
+          <h3 class="product-detail-header-title" id="pdName"></h3>
+        </div>
+        <button class="modal-close" id="productDetailClose" aria-label="Close">&#x2715;</button>
+      </div>
+      <div class="product-detail-body">
+        <div class="product-detail-gallery">
+          <img class="product-detail-main-img" id="pdMainImg" src="" alt="">
+          <div class="product-detail-thumbnails" id="pdThumbs"></div>
+        </div>
+        <div class="product-detail-info">
+          <div class="product-detail-price-row">
+            <span class="product-detail-price" id="pdPrice"></span>
+            <span class="product-detail-original-price" id="pdOriginalPrice" style="display:none;"></span>
+            <span class="product-detail-discount-badge" id="pdDiscountBadge" style="display:none;"></span>
+          </div>
+          <div id="pdVariants"></div>
+          <div class="product-detail-desc" id="pdDesc">Premium handcrafted artificial flower &mdash; beautifully designed to last forever without any maintenance.</div>
+          <div class="product-detail-actions">
+            <div class="product-detail-qty-selector">
+              <button class="product-detail-qty-btn" id="pdQtyMinus" aria-label="Decrease">&#x2212;</button>
+              <span class="product-detail-qty-val" id="pdQtyVal">1</span>
+              <button class="product-detail-qty-btn" id="pdQtyPlus" aria-label="Increase">+</button>
+            </div>
+            <button class="product-detail-add-btn" id="pdAddToCart">Add to Cart</button>
+          </div>
+          <div class="product-detail-reviews">
+            <div class="product-detail-reviews-title">&#x2B50; Customer Reviews</div>
+            <div id="pdReviews"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Stripe JS SDK -->
   <script src="https://js.stripe.com/v3/"></script>
 
@@ -758,6 +799,27 @@
 
             grid.appendChild(card);
 
+            // Tap to open product detail modal
+            const fGroupImages = group.images;
+            const fFinalPrice = finalPrice;
+            const fOriginalPrice = originalPrice;
+            const fFlatDiscount = flatDiscount;
+            card.addEventListener('click', function(e) {
+              if (e.target.closest('button, select, .variant-chip')) return;
+              openProductDetail({
+                name: group.name,
+                images: fGroupImages,
+                price: fFinalPrice,
+                originalPrice: fOriginalPrice > fFinalPrice ? fOriginalPrice : null,
+                discountPct: fFlatDiscount || 0,
+                currency: catalogConfig.currency,
+                tag: (cat.name.includes('Craft') ? 'Specialty Craft' : 'Premium Flower'),
+                variants: null,
+                weight: 500,
+                description: ''
+              });
+            });
+
             if (group.images.length > 1) {
               initCardSlider(card, group.images.length);
             }
@@ -920,6 +982,32 @@
             `;
 
             grid.appendChild(card);
+
+            // Tap to open product detail modal
+            const tapTarget = card.querySelector('.product-image-wrapper, .product-detail-gallery');
+            const productNameEl = card.querySelector('.product-name');
+            const productTag = card.querySelector('.product-tag');
+            function openDetail(e) {
+              // Don't open modal if tapping a button
+              if (e.target.closest('button, select, .variant-chip')) return;
+              const selectedChip = card.querySelector('.variant-chip.selected');
+              const activeVariantId = selectedChip ? selectedChip.getAttribute('data-variant-id') : null;
+              const activePrice = selectedChip ? parseFloat(selectedChip.getAttribute('data-price')) : finalPrice;
+              const activeOriginal = selectedChip ? parseFloat(selectedChip.getAttribute('data-compare')) : originalPrice;
+              openProductDetail({
+                name: product.name,
+                images: images,
+                price: activePrice,
+                originalPrice: activeOriginal > activePrice ? activeOriginal : null,
+                discountPct: activeOriginal > activePrice ? Math.round((1 - activePrice/activeOriginal)*100) : (flatDiscount || 0),
+                currency: catalogConfig.currency,
+                tag: (cat.name.includes('Craft') ? 'Specialty Craft' : 'Premium Flower'),
+                variants: (product.hasVariants && product.variants) ? product.variants.filter(v => v.isActive) : null,
+                weight: product.weight || 500,
+                description: product.description || ''
+              });
+            }
+            card.addEventListener('click', openDetail);
 
             if (images.length > 1) {
               initCardSlider(card, images.length);
@@ -4280,6 +4368,160 @@
         });
       }
 
+
+      // ─── Product Detail Modal ───────────────────────────
+      function openProductDetail(productData) {
+        // productData: { name, images, price, originalPrice, discountPct, currency, variants, tag, description }
+        const modal = document.getElementById('productDetailModal');
+        const cfg = catalogConfig;
+
+        // Name & Tag
+        document.getElementById('pdName').textContent = productData.name;
+        document.getElementById('pdTag').textContent = productData.tag || 'Premium Flower';
+
+        // Price
+        document.getElementById('pdPrice').textContent = cfg.currency + productData.price;
+        const origEl = document.getElementById('pdOriginalPrice');
+        const discEl = document.getElementById('pdDiscountBadge');
+        if (productData.originalPrice && productData.originalPrice > productData.price) {
+          origEl.textContent = cfg.currency + productData.originalPrice;
+          origEl.style.display = '';
+          discEl.textContent = productData.discountPct + '% OFF';
+          discEl.style.display = '';
+        } else {
+          origEl.style.display = 'none';
+          discEl.style.display = 'none';
+        }
+
+        // Description
+        document.getElementById('pdDesc').textContent =
+          productData.description || 'Premium handcrafted artificial flower — beautifully designed to last forever without any maintenance.';
+
+        // Gallery
+        const mainImg = document.getElementById('pdMainImg');
+        const thumbsEl = document.getElementById('pdThumbs');
+        const images = productData.images && productData.images.length > 0 ? productData.images : ['images/logo/brand logo.jpeg'];
+        mainImg.src = images[0];
+        mainImg.alt = productData.name;
+        thumbsEl.innerHTML = '';
+        if (images.length > 1) {
+          images.forEach((src, i) => {
+            const thumb = document.createElement('img');
+            thumb.className = 'product-detail-thumb' + (i === 0 ? ' active' : '');
+            thumb.src = src;
+            thumb.alt = productData.name;
+            thumb.onclick = () => {
+              mainImg.style.opacity = '0';
+              setTimeout(() => { mainImg.src = src; mainImg.style.opacity = '1'; }, 200);
+              thumbsEl.querySelectorAll('.product-detail-thumb').forEach(t => t.classList.remove('active'));
+              thumb.classList.add('active');
+            };
+            thumbsEl.appendChild(thumb);
+          });
+        }
+
+        // Variant chips
+        const variantsEl = document.getElementById('pdVariants');
+        variantsEl.innerHTML = '';
+        let currentPrice = productData.price;
+        let currentOriginal = productData.originalPrice;
+        let currentVariantId = null;
+        let currentWeight = productData.weight || 500;
+
+        if (productData.variants && productData.variants.length > 0) {
+          const container = document.createElement('div');
+          container.className = 'variant-selector';
+          container.innerHTML = '<span class="variant-selector-label">Size</span>';
+          const chips = document.createElement('div');
+          chips.className = 'variant-chips';
+
+          productData.variants.forEach((v, i) => {
+            const val = v.options?.[0]?.value || '';
+            const label = val === '8inch' ? '8 inch' : val === '16inch' ? '16 inch' : val;
+            const chip = document.createElement('button');
+            chip.className = 'variant-chip' + (i === 0 ? ' selected' : '');
+            chip.type = 'button';
+            chip.innerHTML = '<span class="chip-label">' + label + '</span><span class="chip-price">' + cfg.currency + v.price + '</span>';
+            chip.onclick = () => {
+              chips.querySelectorAll('.variant-chip').forEach(c => c.classList.remove('selected'));
+              chip.classList.add('selected');
+              currentPrice = v.price;
+              currentOriginal = v.compareAtPrice || 0;
+              currentVariantId = v.id;
+              currentWeight = v.weight || productData.weight || 500;
+              document.getElementById('pdPrice').textContent = cfg.currency + currentPrice;
+              if (currentOriginal && currentOriginal > currentPrice) {
+                origEl.textContent = cfg.currency + currentOriginal;
+                origEl.style.display = '';
+                const pct = Math.round((1 - currentPrice / currentOriginal) * 100);
+                discEl.textContent = pct + '% OFF';
+                discEl.style.display = '';
+              } else {
+                origEl.style.display = 'none';
+                discEl.style.display = 'none';
+              }
+            };
+            if (i === 0) {
+              currentVariantId = v.id;
+              currentWeight = v.weight || productData.weight || 500;
+            }
+            chips.appendChild(chip);
+          });
+          container.appendChild(chips);
+          variantsEl.appendChild(container);
+        }
+
+        // Quantity
+        let qty = 1;
+        document.getElementById('pdQtyVal').textContent = qty;
+        document.getElementById('pdQtyMinus').onclick = () => {
+          if (qty > 1) { qty--; document.getElementById('pdQtyVal').textContent = qty; }
+        };
+        document.getElementById('pdQtyPlus').onclick = () => {
+          qty++;
+          document.getElementById('pdQtyVal').textContent = qty;
+        };
+
+        // Add to cart button
+        const addBtn = document.getElementById('pdAddToCart');
+        addBtn.textContent = 'Add to Cart';
+        addBtn.classList.remove('added');
+        addBtn.onclick = () => {
+          const price = currentPrice;
+          const variantId = currentVariantId;
+          const selectedChip = variantsEl.querySelector('.variant-chip.selected');
+          const variantLabel = selectedChip ? selectedChip.querySelector('.chip-label')?.textContent : null;
+          const variantOptions = variantLabel ? [{ name: 'Size', value: variantLabel }] : null;
+
+          const variantLabel2 = selectedChip ? selectedChip.querySelector('.chip-label')?.textContent : null;
+          localCart.add(productData.name, price, qty, images[0], variantId, variantLabel2, currentWeight);
+
+          addBtn.textContent = '✓ Added!';
+          addBtn.classList.add('added');
+          setTimeout(() => {
+            addBtn.textContent = 'Add to Cart';
+            addBtn.classList.remove('added');
+          }, 1800);
+        };
+
+        // Reviews (static for now — real reviews can come from API)
+        const reviewsEl = document.getElementById('pdReviews');
+        reviewsEl.innerHTML = '<div class="review-no-reviews">No reviews yet — be the first to review this product!</div>';
+
+        // Show modal
+        modal.classList.add('active');
+      }
+
+      function setupProductDetailModal() {
+        const modal = document.getElementById('productDetailModal');
+        document.getElementById('productDetailClose').addEventListener('click', () => {
+          modal.classList.remove('active');
+        });
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) modal.classList.remove('active');
+        });
+      }
+
       // ─── Initialize ────────────────────────────────────────
       async function init() {
         updateAccentColor();
@@ -4305,6 +4547,7 @@
         setupAccountModal();
         setupPromoModal();
         setupTermsModal();
+        setupProductDetailModal();
         updateProfileIcon();
         updateAuthUI();
 
