@@ -24,6 +24,18 @@
   <link rel="stylesheet" href="/src/css/cart.css">
   <link rel="stylesheet" href="/src/css/contact.css">
   <link rel="stylesheet" href="/src/css/responsive.css">
+  <link rel="stylesheet" href="/src/css/themes.css">
+
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('mb_theme');
+        if (t !== 'ivory' && t !== 'velvet') t = 'velvet';
+        document.documentElement.setAttribute('data-theme', t);
+        if (t === 'ivory') document.documentElement.classList.add('theme-ivory');
+      } catch (e) { /* ignore */ }
+    })();
+  </script>
 
   <script src="/env.js"></script>
   <script src="/config.js"></script>
@@ -31,7 +43,6 @@
 </head>
 
 <body>
-
 
   <!-- Top Notification Container -->
   <div id="topNotificationContainer"></div>
@@ -50,6 +61,15 @@
       <li><a href="#" id="trackOrdersBtn" style="display:none;">My Orders</a></li>
     </ul>
     <div class="navbar-actions">
+      <button type="button" class="theme-toggle-btn" id="themeToggle" data-theme-toggle aria-label="Switch theme">
+        <svg class="theme-toggle-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+        </svg>
+        <svg class="theme-toggle-icon-moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M21 14.5A8.5 8.5 0 1 1 9.5 3 6.5 6.5 0 0 0 21 14.5z"/>
+        </svg>
+        <span class="theme-toggle-label"></span>
+      </button>
       <a href="#" class="navbar-signin-link" id="navSignInLink" style="display:none;">Sign In</a>
       <button class="navbar-profile-btn" id="profileBtn" aria-label="My Account">
         <span class="profile-avatar" id="profileAvatar">
@@ -77,6 +97,17 @@
     <a href="#why-us">Why Us</a>
     <a href="#contact">Contact</a>
     <a href="#" id="sideTrackOrdersBtn" style="display:none;">My Orders</a>
+    <div class="side-menu-theme-toggle">
+      <button type="button" class="theme-toggle-btn" data-theme-toggle aria-label="Switch theme">
+        <svg class="theme-toggle-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+        </svg>
+        <svg class="theme-toggle-icon-moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M21 14.5A8.5 8.5 0 1 1 9.5 3 6.5 6.5 0 0 0 21 14.5z"/>
+        </svg>
+        <span class="theme-toggle-label"></span>
+      </button>
+    </div>
   </div>
 
 

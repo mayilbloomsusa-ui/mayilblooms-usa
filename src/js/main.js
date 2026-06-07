@@ -18,6 +18,7 @@ import {
   showCatalogLoading,
   initProductGridEvents
 } from './catalog.js';
+import { initTheme, initThemeToggle } from './theme.js';
 import { 
   auth, 
   updateAuthUI, 
@@ -593,6 +594,8 @@ function setupProductDetailModal() {
 window.openAccountModal = openAccountModal;
 
 async function init() {
+  initTheme();
+  initThemeToggle();
   updateAccentColor();
   buildNavbar();
   buildHero();

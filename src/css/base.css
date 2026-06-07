@@ -13,18 +13,6 @@
       --accent: #C8102E;
       --accent-dark: #9D0B20;
       --accent-light: #E8384F;
-      --gold: #D4A853;
-      --gold-light: #F0D48A;
-      --gold-glow: rgba(212, 168, 83, 0.45);
-      --bg-dark: #060608;
-      --bg-card: rgba(195, 59, 59, 0.06);
-      --bg-card-hover: rgba(255, 255, 255, 0.12);
-      --text-primary: #FFFFFF;
-      --text-secondary: rgba(255, 255, 255, 0.7);
-      --text-muted: rgba(255, 255, 255, 0.45);
-      --border-glass: rgba(255, 255, 255, 0.10);
-      --border-glass-hover: rgba(255, 255, 255, 0.22);
-      --shadow-glow: 0 8px 32px rgba(200, 16, 46, 0.15);
       --radius-sm: 12px;
       --radius-md: 20px;
       --radius-lg: 32px;
@@ -42,11 +30,12 @@
       -webkit-overflow-scrolling: touch;
       overscroll-behavior-y: contain;
       font-family: var(--font-body);
-      background:
-        radial-gradient(ellipse at 15% 50%, rgba(200, 16, 46, 0.12) 0%, transparent 45%),
-        radial-gradient(ellipse at 85% 15%, rgba(212, 168, 83, 0.10) 0%, transparent 45%),
-        radial-gradient(ellipse at 50% 85%, rgba(100, 30, 70, 0.10) 0%, transparent 45%),
-        var(--bg-dark);
+      background-color: var(--bg-dark);
+      background-image:
+        radial-gradient(ellipse 90% 60% at 12% 22%, var(--bg-gradient-wash-1) 0%, transparent 55%),
+        radial-gradient(ellipse 75% 50% at 88% 12%, var(--bg-gradient-wash-2) 0%, transparent 52%),
+        radial-gradient(ellipse 85% 55% at 50% 98%, var(--bg-gradient-wash-3) 0%, transparent 50%),
+        linear-gradient(168deg, var(--bg-gradient-top) 0%, var(--bg-dark) 38%, var(--bg-gradient-bottom) 100%);
       color: var(--text-primary);
       line-height: 1.6;
       overflow-x: hidden;
@@ -71,7 +60,7 @@
 
     .stat-number .icon-animate {
       /* Same gradient as .stat-number; inherit often fails for clipped text */
-      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      background: var(--stat-gradient);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -218,7 +207,7 @@
       font-weight: 700;
       margin-bottom: 16px;
       line-height: 1.15;
-      background: linear-gradient(270deg, #fff, var(--gold-light), #fff, var(--gold));
+      background: var(--title-gradient);
       background-size: 200% 200%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
