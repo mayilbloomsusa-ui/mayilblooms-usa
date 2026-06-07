@@ -133,3 +133,8 @@ const catalogConfig = {
         ? 'http://localhost:8080/api'
         : '/api'), // Production: relative path (same IP, proxied by Caddy)
 };
+
+if (typeof window !== 'undefined') {
+  window.catalogConfig = catalogConfig;
+}
+

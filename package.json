@@ -1,14 +1,22 @@
 {
-    "name": "mayilblooms-catalog",
-    "version": "1.0.0",
-    "description": "Premium Artificial Flowers Catalog",
-    "main": "index.html",
-    "scripts": {
-        "update": "node update-products.js",
-        "publish": "./publish.sh",
-        "dev": "npx -y http-server -p 3001 -c-1"
-    },
-    "keywords": [],
-    "author": "Mayil blooms",
-    "license": "ISC"
+  "name": "mayilblooms-catalog",
+  "version": "1.0.0",
+  "description": "Premium Artificial Flowers Catalog",
+  "type": "module",
+  "scripts": {
+    "update": "node update-products.js",
+    "publish": "./publish.sh",
+    "dev": "vite --port 3001",
+    "build": "vite build",
+    "preview": "vite preview --port 3001"
+  },
+  "dependencies": {
+    "@sentry/browser": "^8.9.0"
+  },
+  "devDependencies": {
+    "vite": "^4.5.3"
+  },
+  "keywords": [],
+  "author": "Mayil blooms",
+  "license": "ISC"
 }

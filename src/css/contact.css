@@ -1,0 +1,434 @@
+    /* ════════════════════════════════════════════════════════
+       CONTACT SECTION
+       ════════════════════════════════════════════════════════ */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .contact-card {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 24px 28px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-glass);
+      transition: transform 0.6s var(--cinematic-ease),
+                  background 0.4s ease,
+                  border-color 0.4s ease,
+                  box-shadow 0.6s var(--cinematic-ease);
+      text-decoration: none;
+      color: inherit;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .contact-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 50%, rgba(212, 168, 83, 0.06), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .contact-card:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(212, 168, 83, 0.15);
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3),
+                  0 0 20px rgba(212, 168, 83, 0.03);
+    }
+
+    .contact-card:hover::before {
+      opacity: 1;
+    }
+
+    .contact-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .contact-icon.phone {
+      background: linear-gradient(135deg, #25D366, #128C7E);
+    }
+
+    .contact-icon.whatsapp {
+      background: linear-gradient(135deg, #25D366, #128C7E);
+    }
+
+    .contact-icon.email {
+      background: linear-gradient(135deg, #EA4335, #C5221F);
+    }
+
+    .contact-icon.facebook {
+      background: linear-gradient(135deg, #1877F2, #0866FF);
+    }
+
+    .contact-icon.instagram {
+      background: linear-gradient(135deg, #E1306C, #F77737, #FCAF45);
+    }
+
+    .contact-icon.youtube {
+      background: linear-gradient(135deg, #FF0000, #CC0000);
+    }
+
+    .contact-icon.address {
+      background: linear-gradient(135deg, var(--gold), var(--accent));
+    }
+
+    .contact-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+      word-break: break-all;
+      line-height: 1.2;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       FLOATING ACTION BUTTON (FAB)
+       ════════════════════════════════════════════════════════ */
+    .fab-container {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+    }
+
+    .fab-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      opacity: 0;
+      transform: translateY(20px) scale(0.8);
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .fab-container.open .fab-actions {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: all;
+    }
+
+    .fab-action {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 18px 10px 14px;
+      border-radius: 100px;
+      background: rgba(30, 30, 40, 0.95);
+      border: 1px solid var(--border-glass);
+      color: var(--text-primary);
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+    }
+
+    .fab-action:hover {
+      background: rgba(50, 50, 65, 0.95);
+      border-color: var(--border-glass-hover);
+      transform: translateX(-4px);
+    }
+
+    .fab-action-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .fab-action-icon.wa {
+      background: linear-gradient(135deg, #25D366, #128C7E);
+    }
+
+    .fab-action-icon.call {
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    }
+
+    .fab-main {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      border: none;
+      color: white;
+      font-size: 26px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 24px rgba(200, 16, 46, 0.4);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .fab-main:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 32px rgba(200, 16, 46, 0.5);
+    }
+
+    .fab-main .fab-icon-open,
+    .fab-main .fab-icon-close {
+      position: absolute;
+      transition: all 0.3s ease;
+    }
+
+    .fab-main .fab-icon-close {
+      opacity: 0;
+      transform: rotate(-90deg);
+    }
+
+    .fab-container.open .fab-main .fab-icon-open {
+      opacity: 0;
+      transform: rotate(90deg);
+    }
+
+    .fab-container.open .fab-main .fab-icon-close {
+      opacity: 1;
+      transform: rotate(0deg);
+    }
+
+    .fab-pulse {
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      animation: fabPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes fabPulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 0.6;
+      }
+
+      50% {
+        transform: scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       FOOTER
+       ════════════════════════════════════════════════════════ */
+    .footer {
+      text-align: center;
+      padding: 64px 24px 48px;
+      border-top: 1px solid var(--border-glass);
+      margin-top: 0;
+      position: relative;
+      z-index: 1;
+      background: linear-gradient(to bottom, transparent, rgba(6, 6, 8, 0.5));
+    }
+
+    .footer-brand {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--text-primary), var(--gold-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .footer-text {
+      font-size: 14px;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    .footer-divider {
+      margin: 24px auto;
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+    }
+
+/* ════════════════════════════════════════════════════════
+   NOTIFICATION STACK & BANNERS
+   ════════════════════════════════════════════════════════ */
+#topNotificationContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2001;
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+}
+
+.notification-banner-top {
+  width: 100%;
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  animation: slideDownNotification 0.4s ease forwards;
+  pointer-events: auto;
+}
+
+@keyframes slideDownNotification {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+.notification-banner-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-right: 24px;
+}
+
+.notification-banner-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: inherit;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 12px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  margin-left: 8px;
+}
+
+.notification-banner-btn:hover {
+  background: white;
+  color: black !important;
+  border-color: white;
+}
+
+.notification-banner-close {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 16px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+}
+
+.notification-banner-close:hover {
+  opacity: 1;
+}
+
+/* Floating bottom notification style */
+#bottomNotificationContainer {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 3999;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 360px;
+  width: calc(100% - 48px);
+  pointer-events: none;
+}
+
+.notification-toast-bottom {
+  pointer-events: all;
+  background: rgba(15, 15, 20, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-glass-hover);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  animation: slideInToast 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideInToast {
+  from { transform: translateX(120%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.notification-toast-title {
+  font-weight: 700;
+  font-size: 14px;
+  color: white;
+  padding-right: 20px;
+}
+
+.notification-toast-msg {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.notification-toast-close {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.notification-toast-close:hover {
+  color: white;
+}
+
+/* Push navbar down dynamically when top notification active */
+body.has-top-banner .navbar {
+  top: var(--top-banner-height, 40px);
+}
+body.has-top-banner {
+  padding-top: var(--top-banner-height, 40px);
+}
+
+
