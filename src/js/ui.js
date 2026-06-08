@@ -2,6 +2,8 @@
  * UI and Animation Controller Module
  */
 
+import { heroImageHtml } from './utils.js';
+
 export function updateAccentColor() {
   const cfg = window.catalogConfig;
   if (cfg && cfg.accentColor) {
@@ -53,11 +55,13 @@ export function buildNavbar() {
   }
 
   brand.addEventListener('mouseenter', () => {
+    logoWrapper.classList.add('is-spinning');
     spawnFlowers();
     showerInterval = setInterval(spawnFlowers, 400);
   });
 
   brand.addEventListener('mouseleave', () => {
+    logoWrapper.classList.remove('is-spinning');
     if (showerInterval) clearInterval(showerInterval);
   });
 
@@ -126,7 +130,7 @@ export function buildHero() {
   slides.forEach((slideData, i) => {
     const slide = document.createElement('div');
     slide.className = 'hero-slide' + (i === 0 ? ' active' : '');
-    slide.innerHTML = `<img src="${slideData.image}" alt="Slide ${i + 1}" loading="${i === 0 ? 'eager' : 'lazy'}" ${i === 0 ? 'fetchpriority="high"' : ''}>`;
+    slide.innerHTML = heroImageHtml(slideData.image, `Slide ${i + 1}`, i === 0);
     slidesContainer.appendChild(slide);
   });
 
@@ -277,15 +281,24 @@ export function initScrollReveal() {
 }
 
 export function initCardSpotlight() {
+  const canSpotlight = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (!canSpotlight) return;
+
+  let pending = null;
+
   document.addEventListener('mousemove', (e) => {
-    const card = e.target.closest('.product-card');
-    if (!card) return;
-    const rect = card.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    card.style.setProperty('--mouse-x', x + '%');
-    card.style.setProperty('--mouse-y', y + '%');
-  });
+    if (pending) return;
+    pending = requestAnimationFrame(() => {
+      pending = null;
+      const card = e.target.closest('.product-card');
+      if (!card) return;
+      const rect = card.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      card.style.setProperty('--mouse-x', x + '%');
+      card.style.setProperty('--mouse-y', y + '%');
+    });
+  }, { passive: true });
 }
 
 export function buildContact() {

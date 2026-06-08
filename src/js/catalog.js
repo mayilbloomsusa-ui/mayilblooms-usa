@@ -2,7 +2,7 @@
  * Product Catalog Render and Detail Controller Module
  */
 
-import { cleanProductName, parsePrice, escapeHtml } from './utils.js';
+import { cleanProductName, parsePrice, escapeHtml, responsiveImageHtml } from './utils.js';
 import { apiCall, auth } from './auth.js';
 
 const productDetailCache = new Map();
@@ -15,16 +15,11 @@ function resetCatalogState() {
 }
 
 function productImageHtml(src, alt, eager = false) {
-  const safeSrc = escapeHtml(src);
-  const safeAlt = escapeHtml(alt);
-  if (eager) {
-    return `<img src="${safeSrc}" alt="${safeAlt}" loading="eager" fetchpriority="high" decoding="async" width="400" height="500">`;
-  }
-  return `<img src="${safeSrc}" alt="${safeAlt}" loading="lazy" decoding="async" width="400" height="500">`;
+  return responsiveImageHtml(src, alt, { eager });
 }
 
 function nextImageEager() {
-  return globalImageIndex++ < 6;
+  return globalImageIndex++ < 4;
 }
 
 function registerProductDetail(key, data) {
@@ -234,13 +229,16 @@ export function buildProductsFromDb(products, categories) {
   const flatDiscount = cfg.flatDiscount || 0;
   mainContainer.innerHTML = '';
 
+  const activeProducts = products.filter(p => p.isActive !== false);
+
   const sortedCats = [...categories]
-    .filter(c => c.productCount > 0 || products.some(p => p.categoryId === c.id))
+    .filter(c => c.isActive !== false)
+    .filter(c => c.productCount > 0 || activeProducts.some(p => p.categoryId === c.id))
     .sort((a, b) => a.sortOrder - b.sortOrder);
 
   const catProductMap = {};
   sortedCats.forEach(cat => { catProductMap[cat.id] = []; });
-  products.forEach(p => {
+  activeProducts.forEach(p => {
     if (catProductMap[p.categoryId] !== undefined) {
       catProductMap[p.categoryId].push(p);
     }

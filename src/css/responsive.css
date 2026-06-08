@@ -41,6 +41,14 @@
         border-radius: 8px !important;
       }
 
+      .product-card::before {
+        display: none;
+      }
+
+      .product-image-wrapper img {
+        transition: none;
+      }
+
       .product-card .variant-selector,
       .product-card .size-selector-container,
       .product-card .product-actions {

@@ -127,6 +127,23 @@ const catalogConfig = {
   accentColor: "#C8102E",
   currency: "$",
   imagesFolder: "images/product",
+
+  /**
+   * Maps full product image URLs to catalog-sized thumbnails in MinIO.
+   * Thumbnails are generated at upload: products/thumbs/{name}-{200|400|800}.jpg
+   */
+  imageResizeUrl(src, width) {
+    if (!src) return src;
+    const w = width <= 200 ? 200 : width <= 400 ? 400 : 800;
+    if (src.includes('/products/thumbs/')) return src;
+    if (src.includes('/products/') || src.includes('/mayilblossom/products/')) {
+      return src
+        .replace('/products/', '/products/thumbs/')
+        .replace(/\.(jpe?g|png|webp)(\?.*)?$/i, `-${w}.jpg`);
+    }
+    return src;
+  },
+
   apiUrl: (typeof window !== 'undefined' && window.ENV && window.ENV.API_URL)
     ? window.ENV.API_URL
     : (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
