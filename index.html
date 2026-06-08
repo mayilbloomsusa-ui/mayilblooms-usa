@@ -9,6 +9,18 @@
   <meta name="keywords" content="artificial flowers, wholesale flowers, flower garlands, decorations, Mayil blooms">
   <title>Mayil blooms — Premium Artificial Flowers Catalog</title>
 
+  <!-- GitHub Pages subpath: absolute /src and /assets URLs resolve under /mayilblooms-usa/ -->
+  <script>
+    (function () {
+      if (!location.hostname.endsWith('github.io')) return;
+      var match = location.pathname.match(/^(\/[^/]+)\//);
+      if (!match) return;
+      var base = document.createElement('base');
+      base.href = location.origin + match[1] + '/';
+      document.head.insertBefore(base, document.head.firstChild);
+    })();
+  </script>
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

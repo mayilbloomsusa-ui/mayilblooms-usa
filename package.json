@@ -7,7 +7,8 @@
     "update": "node update-products.js",
     "publish": "./publish.sh",
     "dev": "vite --port 3001",
-    "build": "vite build",
+    "build": "vite build && node scripts/write-env.js",
+    "build:pages": "VITE_BASE=/mayilblooms-usa/ vite build && VITE_BASE=/mayilblooms-usa/ node scripts/write-env.js",
     "preview": "vite preview --port 3001"
   },
   "dependencies": {

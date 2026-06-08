@@ -1,3 +1,5 @@
+import { isGitHubPages, isLocalHost, PROD_ORIGIN } from './runtime-env.js';
+
 /**
  * Escape HTML for safe text insertion.
  */
@@ -67,6 +69,13 @@ export function fixImageUrl(url) {
   let fixed = url
     .replace(/http:\/\/localhost:9000/g, 'http://127.0.0.1:9000')
     .replace(/http:\/\/localhost:3001/g, 'http://127.0.0.1:3001');
+
+  if (fixed.startsWith('/s3') && isLocalHost()) {
+    fixed = fixed.replace(/^\/s3/, 'http://127.0.0.1:9000');
+  } else if (fixed.startsWith('/') && isGitHubPages()) {
+    fixed = PROD_ORIGIN + fixed;
+  }
+
   try {
     const parsed = new URL(fixed, window.location.origin);
     parsed.pathname = parsed.pathname
