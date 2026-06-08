@@ -18,9 +18,12 @@
                   box-shadow 0.6s var(--cinematic-ease),
                   border-color 0.4s ease;
       cursor: default;
-      contain: layout style paint;
-      content-visibility: auto;
-      contain-intrinsic-size: 320px;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .product-card {
+        contain: layout style paint;
+      }
     }
 
     @media (hover: hover) and (pointer: fine) {

@@ -28,7 +28,7 @@
 
     body {
       -webkit-overflow-scrolling: touch;
-      overscroll-behavior-y: contain;
+      overscroll-behavior-y: auto;
       font-family: var(--font-body);
       background-color: var(--bg-dark);
       background-image:
@@ -42,12 +42,17 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Scroll lock for background when cart or modal overlays are active */
+    /* Scroll lock for background when cart, modals, or side menu are active */
+    html.scroll-locked,
+    body.scroll-locked,
     html:has(.cart-drawer.active),
     body:has(.cart-drawer.active),
     html:has(.modal-overlay.active),
-    body:has(.modal-overlay.active) {
+    body:has(.modal-overlay.active),
+    html:has(.side-menu-overlay.active),
+    body:has(.side-menu-overlay.active) {
       overflow: hidden !important;
+      touch-action: none;
     }
 
 

@@ -3,6 +3,41 @@
  */
 
 import { apiCall, auth, savedAddresses, fetchSavedAddresses } from './auth.js';
+import { getTheme, THEMES } from './theme.js';
+
+function getStripeAppearance() {
+  const isIvory = getTheme() === THEMES.IVORY;
+  if (isIvory) {
+    return {
+      theme: 'stripe',
+      variables: {
+        colorPrimary: '#9A7228',
+        colorBackground: '#FFFFFF',
+        colorText: '#1C1512',
+        colorTextSecondary: 'rgba(28, 21, 18, 0.65)',
+        colorTextPlaceholder: 'rgba(28, 21, 18, 0.42)',
+        colorDanger: '#E8384F',
+        fontFamily: 'Inter, sans-serif',
+        borderRadius: '8px',
+        spacingUnit: '4px',
+        colorBorder: 'rgba(28, 21, 18, 0.15)',
+      },
+    };
+  }
+  return {
+    theme: 'night',
+    variables: {
+      colorPrimary: '#D4A853',
+      colorBackground: 'rgba(255, 255, 255, 0.05)',
+      colorText: '#ffffff',
+      colorDanger: '#E8384F',
+      fontFamily: 'Inter, sans-serif',
+      borderRadius: '8px',
+      spacingUnit: '4px',
+      colorBorder: 'rgba(255, 255, 255, 0.1)',
+    },
+  };
+}
 
 export let activeTab = 'cart'; // 'cart', 'checkout', 'success'
 export let checkoutShipping = 'COURIER';
@@ -145,7 +180,12 @@ export function renderCart() {
   const footer = document.getElementById('cartFooter');
   const titleText = document.getElementById('cartTitleText');
   const actionBtn = document.getElementById('cartActionBtn');
+  const drawer = document.getElementById('cartDrawer');
   const cfg = window.catalogConfig;
+
+  if (drawer) {
+    drawer.classList.toggle('checkout-mode', activeTab === 'checkout');
+  }
   
   if (activeTab === 'cart') {
     titleText.textContent = "Your Cart";
@@ -538,7 +578,7 @@ export function renderCheckoutForm() {
       </div>
 
       <div id="zelleInstructionsContainer" style="display: ${checkoutPayment === 'ZELLE' ? 'block' : 'none'}; margin-top: 16px;">
-        <div style="background: rgba(212, 175, 55, 0.08); border: 1px solid var(--gold); border-radius: 8px; padding: 16px; color: #fff; font-size: 14px; line-height: 1.5;">
+        <div class="zelle-instructions" style="background: rgba(212, 175, 55, 0.08); border: 1px solid var(--gold); border-radius: 8px; padding: 16px; color: var(--text-primary); font-size: 14px; line-height: 1.5;">
           <strong>Zelle Payment Instructions:</strong><br><br>
           1. Place your order to secure your items.<br>
           2. Send the exact total amount via Zelle to: <strong>5512408424</strong><br>
@@ -792,19 +832,7 @@ export function mountStripeCardElement() {
     amount: totalAmountCents > 0 ? totalAmountCents : 100,
     currency: 'usd',
     paymentMethodTypes: paymentMethodTypes,
-    appearance: {
-      theme: 'night',
-      variables: {
-        colorPrimary: '#D4A853',
-        colorBackground: 'rgba(255, 255, 255, 0.05)',
-        colorText: '#ffffff',
-        colorDanger: '#E8384F',
-        fontFamily: 'Inter, sans-serif',
-        borderRadius: '8px',
-        spacingUnit: '4px',
-        colorBorder: 'rgba(255, 255, 255, 0.1)'
-      }
-    }
+    appearance: getStripeAppearance()
   });
 
   window.stripeCardElement = window.stripeElementsInstance.create('payment');
@@ -1176,3 +1204,9 @@ window.autoApplyModalPromo = function(code) {
     if (btn) btn.click();
   }
 };
+
+document.addEventListener('mb-theme-change', () => {
+  if (checkoutPayment === 'ONLINE' && document.getElementById('stripe-card-element')) {
+    mountStripeCardElement();
+  }
+});

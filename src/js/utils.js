@@ -112,18 +112,21 @@ export function responsiveImageHtml(src, alt, {
   eager = false,
   widths = GRID_IMAGE_WIDTHS,
   sizes = GRID_IMAGE_SIZES,
-  defaultWidth = 400,
   aspectWidth = 400,
   aspectHeight = 500,
 } = {}) {
   const safeAlt = escapeHtml(alt);
-  const safeSrc = escapeHtml(imageUrlAtWidth(src, defaultWidth));
+  // Always use the original image as src so a missing thumb does not break layout/scroll.
+  const safeSrc = escapeHtml(fixImageUrl(src));
   const srcset = buildSrcset(src, widths);
   const loading = eager ? 'eager' : 'lazy';
   const priority = eager ? ' fetchpriority="high"' : '';
   const srcsetAttr = srcset ? ` srcset="${srcset}" sizes="${sizes}"` : '';
+  const fallbackAttr = srcset
+    ? ` onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.removeAttribute('srcset');this.src='${safeSrc}';}"`
+    : '';
 
-  return `<img src="${safeSrc}" alt="${safeAlt}" loading="${loading}" decoding="async"${priority}${srcsetAttr} width="${aspectWidth}" height="${aspectHeight}">`;
+  return `<img src="${safeSrc}" alt="${safeAlt}" loading="${loading}" decoding="async"${priority}${srcsetAttr}${fallbackAttr} width="${aspectWidth}" height="${aspectHeight}">`;
 }
 
 export function heroImageHtml(src, alt, eager = false) {

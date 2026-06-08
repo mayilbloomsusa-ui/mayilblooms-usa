@@ -31,6 +31,8 @@ export function applyTheme(theme) {
   document.querySelectorAll('.theme-toggle-btn').forEach(btn => {
     btn.setAttribute('aria-label', resolved === THEMES.VELVET ? 'Switch to light theme' : 'Switch to dark theme');
   });
+
+  document.dispatchEvent(new CustomEvent('mb-theme-change', { detail: { theme: resolved } }));
 }
 
 export function toggleTheme() {

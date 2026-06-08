@@ -214,17 +214,15 @@
     html.theme-ivory .feature-card h3,
     html.theme-ivory .contact-label,
     html.theme-ivory .empty-state h3,
-    html.theme-ivory .cart-header h2,
     html.theme-ivory .cart-item-name,
-    html.theme-ivory .form-label,
-    html.theme-ivory #cartTitleText {
+    html.theme-ivory .form-label {
       color: var(--text-primary);
     }
 
     html.theme-ivory .section-badge {
-      color: var(--gold);
-      background: rgba(212, 168, 83, 0.12);
-      border-color: rgba(212, 168, 83, 0.28);
+      color: #6B4E14;
+      background: rgba(154, 114, 40, 0.14);
+      border-color: rgba(154, 114, 40, 0.32);
     }
 
     html.theme-ivory .stat-number {
@@ -356,4 +354,58 @@
     html.theme-ivory .hero p,
     html.theme-ivory .hero-badge {
       color: rgba(255, 255, 255, 0.92);
+    }
+
+    html.theme-ivory .hero .btn-secondary {
+      color: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.28);
+    }
+
+    html.theme-ivory .hero .btn-secondary:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.22);
+      border-color: rgba(255, 255, 255, 0.42);
+    }
+
+    html.theme-ivory .cart-header h2,
+    html.theme-ivory #cartTitleText {
+      background: linear-gradient(135deg, var(--text-primary), var(--gold));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    html.theme-ivory .summary-row.total {
+      color: var(--text-primary);
+    }
+
+    html.theme-ivory .form-input,
+    html.theme-ivory .radio-title {
+      color: var(--text-primary);
+    }
+
+    html.theme-ivory .form-input {
+      background: rgba(28, 21, 18, 0.04);
+    }
+
+    html.theme-ivory .form-input:focus {
+      background: rgba(28, 21, 18, 0.06);
+    }
+
+    html.theme-ivory .form-select {
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231C1512' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    }
+
+    html.theme-ivory #stripe-card-element {
+      background: rgba(28, 21, 18, 0.04);
+    }
+
+    html.theme-ivory #stripe-card-element.StripeElement--focus {
+      background: rgba(28, 21, 18, 0.06);
+    }
+
+    html.theme-ivory .payment-info-box,
+    html.theme-ivory .zelle-instructions {
+      color: var(--text-primary) !important;
     }

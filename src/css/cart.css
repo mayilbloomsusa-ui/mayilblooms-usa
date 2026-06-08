@@ -258,6 +258,28 @@
         border-top: 1px solid var(--border-glass);
         padding-bottom: env(safe-area-inset-bottom, 16px);
       }
+
+      /* Checkout: one scroll area — form, summary, and Place Order flow together */
+      .cart-drawer.checkout-mode .cart-content-container {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+      }
+      .cart-drawer.checkout-mode .cart-body {
+        flex: none;
+        overflow: visible;
+        min-height: auto;
+      }
+      .cart-drawer.checkout-mode .cart-footer {
+        flex: none;
+        max-height: none;
+        overflow: visible;
+        border-top: 1px solid var(--border-glass);
+        padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+      }
+      .cart-drawer.checkout-mode .cart-footer .summary-row:not(.total) {
+        font-size: 13px;
+      }
     }
 
     .cart-header {
@@ -272,7 +294,7 @@
       font-family: var(--font-display);
       font-size: 24px;
       font-weight: 700;
-      background: linear-gradient(135deg, #fff, var(--gold-light));
+      background: linear-gradient(135deg, var(--text-primary), var(--gold-light));
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -288,7 +310,7 @@
     }
 
     .cart-close:hover {
-      color: white;
+      color: var(--text-primary);
     }
 
     .cart-body {
@@ -328,7 +350,7 @@
     .cart-item-name {
       font-size: 15px;
       font-weight: 600;
-      color: white;
+      color: var(--text-primary);
       padding-right: 20px;
     }
 
@@ -381,7 +403,7 @@
 
     .summary-row.total {
       font-size: 18px;
-      color: white;
+      color: var(--text-primary);
       font-weight: 700;
       border-top: 1px solid var(--border-glass);
       padding-top: 12px;
@@ -472,7 +494,7 @@
       border: 1px solid var(--border-glass);
       border-radius: 8px;
       padding: 12px;
-      color: white;
+      color: var(--text-primary);
       font-family: var(--font-body);
       font-size: 14px;
       transition: all 0.3s;
@@ -528,7 +550,7 @@
     .radio-title {
       font-size: 14px;
       font-weight: 600;
-      color: white;
+      color: var(--text-primary);
     }
 
     .radio-desc {

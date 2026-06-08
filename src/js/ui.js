@@ -69,11 +69,18 @@ export function buildNavbar() {
   const sideMenu = document.getElementById('sideMenu');
   const menuOverlay = document.getElementById('menuOverlay');
 
+  function setPageScrollLocked(locked) {
+    document.documentElement.classList.toggle('scroll-locked', locked);
+    document.body.classList.toggle('scroll-locked', locked);
+  }
+
   function toggleMenu() {
     if (!sideMenu || !menuOverlay) return;
     sideMenu.classList.toggle('active');
     menuOverlay.classList.toggle('active');
-    menuToggle.textContent = sideMenu.classList.contains('active') ? '✕' : '☰';
+    const isOpen = sideMenu.classList.contains('active');
+    menuToggle.textContent = isOpen ? '✕' : '☰';
+    setPageScrollLocked(isOpen);
   }
 
   if (menuToggle && sideMenu && menuOverlay) {
