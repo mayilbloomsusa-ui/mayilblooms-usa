@@ -53,8 +53,17 @@ export function setAppliedPromo(val) { appliedPromo = val; }
 export function setIsRegistering(val) { isRegistering = val; }
 export function setIsPlacingOrder(val) { isPlacingOrder = val; }
 
+function loadCartItems() {
+  try {
+    return JSON.parse(localStorage.getItem('mb_cart') || '[]');
+  } catch {
+    localStorage.removeItem('mb_cart');
+    return [];
+  }
+}
+
 export const localCart = {
-  items: JSON.parse(localStorage.getItem('mb_cart') || '[]'),
+  items: loadCartItems(),
   
   save() {
     localStorage.setItem('mb_cart', JSON.stringify(this.items));

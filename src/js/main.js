@@ -92,7 +92,7 @@ window.getDbProductByName = getDbProductByName;
 async function fetchDbProducts() {
   const cfg = window.catalogConfig;
   try {
-    const res = await fetch(`${cfg.apiUrl}/products?size=200&_t=${Date.now()}`, { cache: 'no-store' });
+    const res = await fetch(`${cfg.apiUrl}/products?size=200&isActive=true&_t=${Date.now()}`, { cache: 'no-store' });
     if (res.ok) {
       const data = await res.json();
       dbProducts = data.data?.content || [];
@@ -135,6 +135,14 @@ async function fetchEnabledFeatures() {
   } catch (e) {
     console.warn('Failed to fetch enabled features.', e);
   }
+}
+
+function showPromoError(el, message) {
+  el.style.display = 'block';
+  el.style.background = 'rgba(232, 56, 79, 0.1)';
+  el.style.border = '1px solid rgba(232, 56, 79, 0.3)';
+  el.style.color = '#E8384F';
+  el.innerHTML = message;
 }
 
 function setupCartEventListeners() {
@@ -194,6 +202,14 @@ function setupCartEventListeners() {
 
       try {
         const res = await apiCall(`/discounts/validate?code=${encodeURIComponent(code)}&subtotal=${subtotal}`);
+
+        if (res.status === 401 || res.status === 403) {
+          setAppliedPromo(null);
+          showPromoError(msg, '✗ Please sign in to apply coupon codes');
+          updateCartSummary();
+          return;
+        }
+
         const data = await res.json();
 
         if (res.ok && data.data) {
@@ -206,20 +222,12 @@ function setupCartEventListeners() {
           updateCartSummary();
         } else {
           setAppliedPromo(null);
-          msg.style.display = 'block';
-          msg.style.background = 'rgba(232, 56, 79, 0.1)';
-          msg.style.border = '1px solid rgba(232, 56, 79, 0.3)';
-          msg.style.color = '#E8384F';
-          msg.innerHTML = `✗ ${data.message || 'Invalid or expired promo code'}`;
+          showPromoError(msg, `✗ ${data.message || 'Invalid or expired promo code'}`);
           updateCartSummary();
         }
       } catch (e) {
         setAppliedPromo(null);
-        msg.style.display = 'block';
-        msg.style.background = 'rgba(232, 56, 79, 0.1)';
-        msg.style.border = '1px solid rgba(232, 56, 79, 0.3)';
-        msg.style.color = '#E8384F';
-        msg.textContent = '✗ Failed to validate promo code';
+        showPromoError(msg, '✗ Failed to validate promo code');
         updateCartSummary();
       }
     });
@@ -297,7 +305,8 @@ function setupCartEventListeners() {
   document.addEventListener('click', (e) => {
     if (e.target.classList.contains('qty-minus')) {
       const name = e.target.getAttribute('data-name');
-      const qtyValEl = document.getElementById(`qty-${name.replace(/\s+/g, '-')}`);
+      const safeName = name.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '');
+      const qtyValEl = document.getElementById(`qty-${safeName}`);
       if (qtyValEl) {
         let val = parseInt(qtyValEl.textContent, 10);
         if (val > 1) {
@@ -308,7 +317,8 @@ function setupCartEventListeners() {
     
     if (e.target.classList.contains('qty-plus')) {
       const name = e.target.getAttribute('data-name');
-      const qtyValEl = document.getElementById(`qty-${name.replace(/\s+/g, '-')}`);
+      const safeName = name.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '');
+      const qtyValEl = document.getElementById(`qty-${safeName}`);
       if (qtyValEl) {
         let val = parseInt(qtyValEl.textContent, 10);
         qtyValEl.textContent = val + 1;
@@ -386,26 +396,31 @@ function setupCartEventListeners() {
   });
 }
 
+async function fetchCategories() {
+  const cfg = window.catalogConfig;
+  try {
+    const res = await fetch(`${cfg.apiUrl}/categories?_t=${Date.now()}`, { cache: 'no-store' });
+    if (res.ok) {
+      const data = await res.json();
+      return data.data || [];
+    }
+  } catch (e) {
+    console.warn('Could not load categories.', e);
+  }
+  return null;
+}
+
 async function initStore() {
-  await fetchDbProducts();
-  await fetchPaymentConfig();
-  await fetchEnabledFeatures();
+  await Promise.all([fetchDbProducts(), fetchPaymentConfig(), fetchEnabledFeatures()]);
   updateCartBadge();
   updateAuthUI();
   setupCartEventListeners();
   
   if (dbProducts.length > 0) {
-    try {
-      const catRes = await fetch(`${window.catalogConfig.apiUrl}/categories?_t=${Date.now()}`, { cache: 'no-store' });
-      if (catRes.ok) {
-        const catData = await catRes.json();
-        const categories = catData.data || [];
-        buildProductsFromDb(dbProducts, categories);
-      } else {
-        buildProductsFromDb(dbProducts, [{ id: dbProducts[0]?.categoryId, name: 'Our Collection', sortOrder: 0, productCount: dbProducts.length }]);
-      }
-    } catch (e) {
-      console.warn('Could not load categories, grouping all products together.', e);
+    const categories = await fetchCategories();
+    if (categories) {
+      buildProductsFromDb(dbProducts, categories);
+    } else {
       const fallbackCats = {};
       dbProducts.forEach(p => {
         if (!fallbackCats[p.categoryId]) fallbackCats[p.categoryId] = { id: p.categoryId, name: p.categoryName || 'Collection', sortOrder: 0, productCount: 0 };
@@ -508,11 +523,7 @@ function setupPromoModal() {
     applyPromoBtn.addEventListener('click', async () => {
       const code = promoInput.value.trim();
       if (!code) {
-        promoMsg.style.display = 'block';
-        promoMsg.style.background = 'rgba(232, 56, 79, 0.1)';
-        promoMsg.style.border = '1px solid rgba(232, 56, 79, 0.3)';
-        promoMsg.style.color = '#E8384F';
-        promoMsg.textContent = 'Please enter a coupon code';
+        showPromoError(promoMsg, 'Please enter a coupon code');
         return;
       }
 
@@ -526,14 +537,10 @@ function setupPromoModal() {
 
       try {
         const res = await apiCall(`/discounts/validate?code=${encodeURIComponent(code)}&subtotal=${subtotal}`);
-        
+
         if (res.status === 401 || res.status === 403) {
-          promoMsg.style.display = 'block';
-          promoMsg.style.background = 'rgba(232, 56, 79, 0.1)';
-          promoMsg.style.border = '1px solid rgba(232, 56, 79, 0.3)';
-          promoMsg.style.color = '#E8384F';
-          promoMsg.innerHTML = '✗ Please sign in/register to apply coupon codes';
           setAppliedPromo(null);
+          showPromoError(promoMsg, '✗ Please sign in to apply coupon codes');
           updateCartSummary();
           return;
         }
@@ -547,28 +554,18 @@ function setupPromoModal() {
           promoMsg.style.border = '1px solid rgba(16, 185, 129, 0.3)';
           promoMsg.style.color = '#10B981';
           promoMsg.innerHTML = `✓ Coupon <strong>${code}</strong> applied successfully (${appliedPromo.valueType === 'PERCENTAGE' ? appliedPromo.value + '%' : window.catalogConfig.currency + appliedPromo.value} OFF)!`;
-          
           updateCartSummary();
-          
           setTimeout(() => {
             if (promoModal) promoModal.classList.remove('active');
           }, 1500);
         } else {
           setAppliedPromo(null);
-          promoMsg.style.display = 'block';
-          promoMsg.style.background = 'rgba(232, 56, 79, 0.1)';
-          promoMsg.style.border = '1px solid rgba(232, 56, 79, 0.3)';
-          promoMsg.style.color = '#E8384F';
-          promoMsg.innerHTML = `✗ ${data.message || 'Invalid or expired promo code'}`;
+          showPromoError(promoMsg, `✗ ${data.message || 'Invalid or expired promo code'}`);
           updateCartSummary();
         }
       } catch (e) {
         setAppliedPromo(null);
-        promoMsg.style.display = 'block';
-        promoMsg.style.background = 'rgba(232, 56, 79, 0.1)';
-        promoMsg.style.border = '1px solid rgba(232, 56, 79, 0.3)';
-        promoMsg.style.color = '#E8384F';
-        promoMsg.textContent = '✗ Failed to validate promo code';
+        showPromoError(promoMsg, '✗ Failed to validate promo code');
         updateCartSummary();
       }
     });
