@@ -39,6 +39,10 @@
 
       .product-card {
         border-radius: 8px !important;
+        /* Skip rendering/painting off-screen cards: big scroll + memory win on mobile.
+           `auto` height lets the browser remember real sizes; 320px is the first-paint estimate. */
+        content-visibility: auto;
+        contain-intrinsic-size: auto 320px;
       }
 
       .product-card::before {

@@ -173,8 +173,6 @@
       max-width: 100vw;
       max-height: 100vh;
       background: var(--bg-surface);
-      backdrop-filter: blur(40px);
-      -webkit-backdrop-filter: blur(40px);
       z-index: 3000;
       display: flex;
       flex-direction: column;

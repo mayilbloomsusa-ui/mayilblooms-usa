@@ -54,11 +54,9 @@ const catalogConfig = {
   logo: "images/logo/brand logo.jpeg",
 
   // ─── Pricing & Discounts ──────────────────────────────────
-  flatDiscount: 30,
-
   // Set to true to show the Credit Card (Stripe) payment option at checkout.
   // Set to false to hide Credit Card checkout and only allow Cash on Delivery.
-  enableStripePayment: true,
+  enableStripePayment: false,
 
   // ─── Taxes & Shipping ──────────────────────────────────────
   taxPercentage: 7, // Tax percentage applied at checkout (e.g., 7 for 7%)
@@ -68,7 +66,7 @@ const catalogConfig = {
   // ─── Contact Details ──────────────────────────────────────
   contactDetails: {
     phone: "+1 9472759100",
-    whatsapp: "+19472759100",
+    whatsapp: "+1 9472759100",
     email: "mayilbloomsusa@gmail.com",
     instagram: "https://www.instagram.com/mayilblooms/",
     youtube: "https://youtube.com/@mayilblooms?si=iVFXLzdmqX_64wpF",
@@ -99,53 +97,6 @@ const catalogConfig = {
       subtitle: "Beautifully crafted jasmine accessories for every occasion"
     }
   ],
-
-  // ─── Products ─────────────────────────────────────────────
-  // List your product image filenames here.
-  //
-  // RULES:
-  // 1. Name & Price are parsed from filename: flower-name-$price.ext
-  // 2. Images with the SAME flower name will be grouped automatically!
-  // 3. Variations like "16inch" or "8inch" are ignored in the name.
-  // 4. Price in filename is the FINAL price after discount.
-  //
-  categories: [
-  {
-    name: "Flowers",
-    id: "flowers",
-    products: [
-      "flowers/BLOOMED  MULLIPOO 16INCH STRING_$28 - Copy.jpeg",
-      "flowers/BLOOMED JAATHI MALLIPOO 16INCH STRING_$28 - Copy.jpeg",
-      "flowers/BLOOMED JASMINE MALLIPOO 16INCH_$25.jpg",
-      "flowers/CLOSED MALLIPOO STRING 16INCH_$28 - Copy.jpeg",
-      "flowers/CLOSED MALLIPOO STRING 16INCH_$28.png",
-      "flowers/closed mullaiPOO STRING 16 INCH_$28.png",
-      "flowers/closed mullaiPOO STRING 16 INCH_$28.webp"
-    ]
-  },
-  {
-    name: "Featured Crafts",
-    id: "crafts",
-    products: [
-      "crafts/Artificial Jasmine Bud Hair Rubber Band_$5.jpg",
-      "crafts/MALLI CENTER MEDIUM HAIR CLIP_$8.png",
-      "crafts/Realistic Jasmine 9 pieces Jadai Set_$40.png",
-      "crafts/Realistic Jasmine Hair U Pin_$4.png",
-      "crafts/CLOSED MULLAI WITH ROSE HAIR CLIP FRONT_$4.jpeg",
-      "crafts/CLOSED MULLAI WITH ROSE SMALL HAIR BACK CLIP_$4.jpeg",
-      "crafts/JASMINE ROSE ALIGATOR CLIP BACK_$5.jpeg",
-      "crafts/JASMINE ROSE ALIGATOR CLIP FRONT_$5.jpeg",
-      "crafts/JASMINE WITH ROSE HAIR CLIP BACK_$5.jpeg",
-      "crafts/JASMINE WITH ROSE HAIR CLIP FRONT_$5.jpeg",
-      "crafts/MULLAI U PIN BACK_$4.jpeg",
-      "crafts/MULLAI U PIN FRONT_$4.jpeg",
-      "crafts/MULLAI WITH ROSE ALIGATOR CLIP BACK_$5.jpeg",
-      "crafts/MULLAI WITH ROSE ALIGATOR CLIP FRONT_$5.jpeg",
-      "crafts/MULLAI WITH ROSE HAIR BAND BACK_$5.jpeg",
-      "crafts/MULLAI WITH ROSE HAIR BAND FRONT_$5.jpeg"
-    ]
-  }
-],
 
   // ─── Appearance ───────────────────────────────────────────
   accentColor: "#C8102E",

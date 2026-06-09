@@ -13,10 +13,10 @@ import {
   buildContact
 } from './ui.js';
 import { 
-  buildProducts, 
   buildProductsFromDb, 
   showCatalogLoading,
-  initProductGridEvents
+  initProductGridEvents,
+  showOfflineScreen
 } from './catalog.js';
 import { initTheme, initThemeToggle } from './theme.js';
 import { 
@@ -33,7 +33,6 @@ import {
   localCart, 
   renderCart, 
   updateCartBadge, 
-  placeOrderViaWhatsApp,
   activeTab,
   setActiveTab,
   appliedPromo,
@@ -45,6 +44,8 @@ import {
   setCheckoutShipping,
   mountStripeCardElement
 } from './cart.js';
+
+import { logAnalyticsEvent } from './utils.js';
 
 // Global variables
 export let dbProducts = [];
@@ -91,7 +92,7 @@ window.getDbProductByName = getDbProductByName;
 async function fetchDbProducts() {
   const cfg = window.catalogConfig;
   try {
-    const res = await fetch(`${cfg.apiUrl}/products?size=200`);
+    const res = await fetch(`${cfg.apiUrl}/products?size=200&_t=${Date.now()}`, { cache: 'no-store' });
     if (res.ok) {
       const data = await res.json();
       dbProducts = data.data?.content || [];
@@ -282,9 +283,7 @@ function setupCartEventListeners() {
   if (cartActionBtn) {
     cartActionBtn.addEventListener('click', () => {
       if (activeTab === 'cart') {
-        if (!dbProducts.length) {
-          placeOrderViaWhatsApp();
-        } else {
+        if (dbProducts.length > 0) {
           setActiveTab('checkout');
           renderCart();
         }
@@ -397,7 +396,7 @@ async function initStore() {
   
   if (dbProducts.length > 0) {
     try {
-      const catRes = await fetch(`${window.catalogConfig.apiUrl}/categories`);
+      const catRes = await fetch(`${window.catalogConfig.apiUrl}/categories?_t=${Date.now()}`, { cache: 'no-store' });
       if (catRes.ok) {
         const catData = await catRes.json();
         const categories = catData.data || [];
@@ -415,7 +414,7 @@ async function initStore() {
       buildProductsFromDb(dbProducts, Object.values(fallbackCats));
     }
   } else {
-    buildProducts();
+    showOfflineScreen();
   }
 
   if (auth.isLoggedIn()) {
@@ -619,6 +618,23 @@ async function init() {
   updateAuthUI();
 
   document.title = `${window.catalogConfig.businessName} — ${window.catalogConfig.tagline || 'Product Catalog'}`;
+
+  // Log visitor traffic
+  logAnalyticsEvent('VISIT');
+
+  // Track contact inquiries
+  document.addEventListener('click', (e) => {
+    const contactCard = e.target.closest('.contact-card');
+    if (contactCard) {
+      const label = contactCard.querySelector('.contact-label')?.textContent || 'General';
+      logAnalyticsEvent('ENQUIRY', { metadata: { type: label } });
+    }
+    const fabAction = e.target.closest('.fab-action');
+    if (fabAction) {
+      const label = fabAction.textContent?.trim() || 'FAB Contact';
+      logAnalyticsEvent('ENQUIRY', { metadata: { type: label } });
+    }
+  });
 }
 
 if (document.readyState === 'loading') {

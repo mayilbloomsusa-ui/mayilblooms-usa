@@ -83,16 +83,13 @@ export async function refreshAccessToken() {
 export function updateAuthUI() {
   const trackBtn = document.getElementById('trackOrdersBtn');
   const sideTrackBtn = document.getElementById('sideTrackOrdersBtn');
-  const signInLink = document.getElementById('navSignInLink');
   
   if (auth.isLoggedIn()) {
     if (trackBtn) trackBtn.style.display = 'block';
     if (sideTrackBtn) sideTrackBtn.style.display = 'block';
-    if (signInLink) signInLink.style.display = 'none';
   } else {
     if (trackBtn) trackBtn.style.display = 'none';
     if (sideTrackBtn) sideTrackBtn.style.display = 'none';
-    if (signInLink) signInLink.style.display = 'inline-flex';
   }
   
   updateProfileIcon();
@@ -1308,16 +1305,9 @@ export async function openOrderHistoryModal() {
 
 export function setupAccountModal() {
   const profileBtn = document.getElementById('profileBtn');
-  const signInLink = document.getElementById('navSignInLink');
 
   if (profileBtn) {
     profileBtn.addEventListener('click', () => openAccountModal('profile'));
-  }
-  if (signInLink) {
-    signInLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      openAccountModal('profile');
-    });
   }
 
   const accountModalClose = document.getElementById('accountModalClose');

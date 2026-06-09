@@ -97,7 +97,8 @@
       font-size: 15px;
       font-weight: 500;
       color: var(--text-primary);
-      word-break: break-all;
+      word-break: normal;
+      overflow-wrap: break-word;
       line-height: 1.2;
     }
 
@@ -376,8 +377,6 @@
 .notification-toast-bottom {
   pointer-events: all;
   background: rgba(15, 15, 20, 0.95);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-glass-hover);
   border-radius: var(--radius-sm);
   padding: 16px;

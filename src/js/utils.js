@@ -121,21 +121,26 @@ export function responsiveImageHtml(src, alt, {
   eager = false,
   widths = GRID_IMAGE_WIDTHS,
   sizes = GRID_IMAGE_SIZES,
+  defaultWidth = 400,
   aspectWidth = 400,
   aspectHeight = 500,
 } = {}) {
   const safeAlt = escapeHtml(alt);
-  // Always use the original image as src so a missing thumb does not break layout/scroll.
-  const safeSrc = escapeHtml(fixImageUrl(src));
+  // Prefer a resized default source when available to reduce decode/memory pressure on mobile.
+  const hasResize = typeof window.catalogConfig?.imageResizeUrl === 'function';
+  const defaultSrc = hasResize ? imageUrlAtWidth(src, defaultWidth) : fixImageUrl(src);
+  const safeSrc = escapeHtml(defaultSrc);
+  const safeOriginalSrc = escapeHtml(fixImageUrl(src));
   const srcset = buildSrcset(src, widths);
   const loading = eager ? 'eager' : 'lazy';
+  const decoding = eager ? 'sync' : 'async';
   const priority = eager ? ' fetchpriority="high"' : '';
   const srcsetAttr = srcset ? ` srcset="${srcset}" sizes="${sizes}"` : '';
   const fallbackAttr = srcset
-    ? ` onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.removeAttribute('srcset');this.src='${safeSrc}';}"`
+    ? ` onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.removeAttribute('srcset');this.src='${safeOriginalSrc}';}"`
     : '';
 
-  return `<img src="${safeSrc}" alt="${safeAlt}" loading="${loading}" decoding="async"${priority}${srcsetAttr}${fallbackAttr} width="${aspectWidth}" height="${aspectHeight}">`;
+  return `<img src="${safeSrc}" alt="${safeAlt}" loading="${loading}" decoding="${decoding}"${priority}${srcsetAttr}${fallbackAttr} width="${aspectWidth}" height="${aspectHeight}">`;
 }
 
 export function heroImageHtml(src, alt, eager = false) {
@@ -148,3 +153,75 @@ export function heroImageHtml(src, alt, eager = false) {
     aspectHeight: 720,
   });
 }
+
+let geoInfo = null;
+
+async function getGeoInfo() {
+  if (geoInfo) return geoInfo;
+  const cached = sessionStorage.getItem('mb_geo_info');
+  if (cached) {
+    try {
+      geoInfo = JSON.parse(cached);
+      return geoInfo;
+    } catch(e) {}
+  }
+  try {
+    const res = await fetch('https://ipapi.co/json/');
+    if (res.ok) {
+      const data = await res.json();
+      geoInfo = {
+        ipAddress: data.ip,
+        country: data.country_name,
+        state: data.region,
+        city: data.city
+      };
+      sessionStorage.setItem('mb_geo_info', JSON.stringify(geoInfo));
+      return geoInfo;
+    }
+  } catch (err) {
+    console.warn('Geolocation lookup failed', err);
+  }
+  return { ipAddress: null, country: null, state: null, city: null };
+}
+
+function getSessionId() {
+  let sId = sessionStorage.getItem('mb_analytics_session');
+  if (!sId) {
+    sId = 'session_' + Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
+    sessionStorage.setItem('mb_analytics_session', sId);
+  }
+  return sId;
+}
+
+export async function logAnalyticsEvent(eventType, details = {}) {
+  const sessionId = getSessionId();
+  const geo = await getGeoInfo();
+  
+  let baseUrl = window.API_BASE_URL || '';
+  if (!baseUrl && window.catalogConfig?.apiBaseUrl) {
+    baseUrl = window.catalogConfig.apiBaseUrl;
+  }
+  
+  const payload = {
+    sessionId,
+    eventType,
+    productId: details.productId || null,
+    productName: details.productName || null,
+    ipAddress: geo.ipAddress,
+    country: geo.country,
+    state: geo.state,
+    city: geo.city,
+    metadata: details.metadata ? JSON.stringify(details.metadata) : null
+  };
+
+  try {
+    await fetch(`${baseUrl}/api/analytics/event`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  } catch (err) {
+    console.warn('Failed to send analytics event', err);
+  }
+}
+

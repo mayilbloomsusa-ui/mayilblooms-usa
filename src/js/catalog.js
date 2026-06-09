@@ -2,10 +2,11 @@
  * Product Catalog Render and Detail Controller Module
  */
 
-import { cleanProductName, parsePrice, escapeHtml, responsiveImageHtml } from './utils.js';
+import { cleanProductName, parsePrice, escapeHtml, responsiveImageHtml, logAnalyticsEvent, imageUrlAtWidth } from './utils.js';
 import { apiCall, auth } from './auth.js';
 
 const productDetailCache = new Map();
+const warmedImageUrls = new Set();
 let gridEventsBound = false;
 let globalImageIndex = 0;
 
@@ -19,7 +20,52 @@ function productImageHtml(src, alt, eager = false) {
 }
 
 function nextImageEager() {
-  return globalImageIndex++ < 4;
+  // On mobile, keep a larger near-fold buffer eager to avoid visible re-render during short scroll-backs.
+  const eagerLimit = window.matchMedia('(max-width: 768px)').matches ? 18 : 12;
+  return globalImageIndex++ < eagerLimit;
+}
+
+async function warmImage(url) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.decoding = 'sync';
+    img.onload = () => resolve();
+    img.onerror = () => resolve();
+    img.src = url;
+    if (typeof img.decode === 'function') {
+      img.decode().then(resolve).catch(resolve);
+    }
+  });
+}
+
+function warmCatalogImages(urls) {
+  if (!Array.isArray(urls) || urls.length === 0) return;
+
+  const queue = urls.filter((url) => {
+    if (!url || warmedImageUrls.has(url)) return false;
+    warmedImageUrls.add(url);
+    return true;
+  });
+  if (!queue.length) return;
+
+  const run = async () => {
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const maxWarm = isMobile ? 24 : queue.length;
+    const targets = queue.slice(0, maxWarm);
+    const concurrency = isMobile ? 2 : 4;
+    for (let i = 0; i < targets.length; i += concurrency) {
+      const batch = targets.slice(i, i + concurrency);
+      await Promise.all(batch.map((src) => warmImage(src)));
+    }
+  };
+
+  const schedule = window.requestIdleCallback
+    ? window.requestIdleCallback.bind(window)
+    : (cb) => setTimeout(() => cb({ didTimeout: false, timeRemaining: () => 0 }), 200);
+
+  schedule(() => {
+    run().catch(() => {});
+  });
 }
 
 function registerProductDetail(key, data) {
@@ -92,132 +138,17 @@ export function initProductGridEvents() {
   });
 }
 
-export function buildProducts() {
-  const cfg = window.catalogConfig;
+export function showOfflineScreen() {
   const mainContainer = document.getElementById('products');
-  if (!cfg || !mainContainer) return;
-
-  resetCatalogState();
-  const flatDiscount = cfg.flatDiscount || 0;
-  mainContainer.innerHTML = '';
-
-  const categories = cfg.categories || [{ name: "Our Collection", id: "all", products: cfg.products || [] }];
-  let totalProductsCount = 0;
-
-  categories.forEach((cat, catIdx) => {
-    const groups = {};
-    cat.products.forEach(fn => {
-      const name = cleanProductName(fn);
-      const { price, isUnavailable } = parsePrice(fn);
-      if (!groups[name]) groups[name] = { name, images: [], prices: [], rawFilenames: [], unavailableMap: {} };
-      groups[name].images.push((cfg.imagesFolder || 'images') + '/' + fn);
-      groups[name].rawFilenames.push(fn);
-      if (price !== null) groups[name].prices.push(price);
-      groups[name].unavailableMap[fn] = isUnavailable;
-    });
-
-    const productEntries = Object.values(groups);
-    totalProductsCount += productEntries.length;
-
-    const header = document.createElement('div');
-    header.className = 'section-header';
-    header.id = cat.id;
-    if (catIdx > 0) header.style.marginTop = '100px';
-    header.innerHTML = `
-      <span class="section-badge">${catIdx === 0 ? 'Featured' : 'Collection'}</span>
-      <h2 class="section-title">${escapeHtml(cat.name)}</h2>
-      <div class="divider"></div>
-      ${catIdx === 0 ? '<p class="section-subtitle">Premium handcrafted artificial flowers and crafts</p>' : ''}
-    `;
-    mainContainer.appendChild(header);
-
-    const grid = document.createElement('div');
-    grid.className = 'product-grid';
-    mainContainer.appendChild(grid);
-
-    if (productEntries.length === 0) {
-      grid.innerHTML = `<div class="empty-state" style="grid-column: 1 / -1;">No items found in this category.</div>`;
-      return;
-    }
-
-    productEntries.forEach((group, index) => {
-      const isGroupUnavailable = group.rawFilenames.every(fn => group.unavailableMap[fn]);
-      
-      let finalPrice = group.prices.length > 0 ? Math.min(...group.prices) : 0;
-      let originalPrice = (flatDiscount > 0 && flatDiscount < 100)
-        ? Math.ceil(finalPrice / (1 - (flatDiscount / 100)))
-        : finalPrice;
-
-      let variationTag = 'Handcrafted Design';
-      const allRaws = group.rawFilenames.join(' ').toUpperCase();
-      if (allRaws.includes('INCH')) {
-        variationTag = 'Available in 16" and 8" sizes';
-      } else if (allRaws.includes('PIECES') || allRaws.includes('PIECE') || allRaws.includes('PCS')) {
-        const pieceMatch = allRaws.match(/(\d+)\s*(PIECES|PIECE|PCS)/);
-        variationTag = pieceMatch ? `${pieceMatch[1]} Pieces Set` : 'Complete Set';
-      }
-
-      const actionsHTML = isGroupUnavailable ? '' : `
-        <div class="product-actions">
-          <div class="quantity-selector">
-            <button class="qty-btn qty-minus" data-name="${group.name.replace(/"/g, '&quot;')}">−</button>
-            <span class="qty-val" id="qty-${group.name.replace(/\s+/g, '-')}">1</span>
-            <button class="qty-btn qty-plus" data-name="${group.name.replace(/"/g, '&quot;')}">+</button>
-          </div>
-          <button class="btn-add-cart" data-name="${group.name.replace(/"/g, '&quot;')}" data-price="${finalPrice}" data-weight="500">
-            <span>Add to Cart</span>
-          </button>
-        </div>
-      `;
-
-      const images = group.images && group.images.length > 0 ? group.images : ['images/logo/brand logo.jpeg'];
-      const productKey = `static-${cat.id}-${index}`;
-      const safeName = group.name.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '');
-      const sliderHTML = productImageHtml(images[0], group.name, nextImageEager());
-
-      registerProductDetail(productKey, {
-        type: 'static',
-        name: group.name,
-        images,
-        price: finalPrice,
-        originalPrice: originalPrice > finalPrice ? originalPrice : null,
-        discountPct: flatDiscount || 0,
-        currency: cfg.currency,
-        tag: cat.name.includes('Craft') ? 'Specialty Craft' : 'Premium Flower',
-        weight: 500,
-        description: ''
-      });
-
-      const card = document.createElement('div');
-      card.className = 'product-card' + (isGroupUnavailable ? ' unavailable' : '');
-      card.setAttribute('data-product-key', productKey);
-      card.innerHTML = `
-        <div class="product-image-wrapper">
-          ${sliderHTML}
-          <div class="product-image-overlay"></div>
-          ${isGroupUnavailable ? '<div class="unavailable-badge"><span>Coming soon</span></div>' : ''}
-          ${flatDiscount > 0 && !isGroupUnavailable ? `<div class="discount-tag">${flatDiscount}% OFF</div>` : ''}
-          ${finalPrice > 0 ? `
-            <div class="product-price-badge" id="price-badge-${safeName}">
-              <span class="original-price">${cfg.currency}${originalPrice}</span>
-              <span>${cfg.currency}${finalPrice}</span>
-            </div>
-          ` : ''}
-        </div>
-        <div class="product-info">
-          <div class="product-name">${escapeHtml(group.name)}</div>
-          <div class="product-tag">${cat.name.includes('Craft') ? 'Specialty Craft' : 'Premium Flower'}</div>
-          <span class="variation-tag">${escapeHtml(variationTag)}</span>
-          ${actionsHTML}
-        </div>
-      `;
-
-      grid.appendChild(card);
-    });
-  });
-
-  const statProd = document.getElementById('statProducts');
-  if (statProd) statProd.textContent = totalProductsCount + '+';
+  if (!mainContainer) return;
+  mainContainer.innerHTML = `
+    <div style="text-align: center; padding: 80px 24px; max-width: 500px; margin: 0 auto;">
+      <div style="font-size: 64px; margin-bottom: 24px; animation: pulse 2s infinite;">⚠️</div>
+      <h2 style="font-family: var(--font-display); font-size: 28px; color: white; margin-bottom: 12px;">Store Temporarily Offline</h2>
+      <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 32px;">We are currently performing scheduled maintenance or updating our catalog. Please check back in a few minutes.</p>
+      <button class="btn btn-secondary" onclick="window.location.reload();" style="width: auto; padding: 12px 32px;">Try Again</button>
+    </div>
+  `;
 }
 
 export function buildProductsFromDb(products, categories) {
@@ -226,10 +157,10 @@ export function buildProductsFromDb(products, categories) {
   if (!cfg || !mainContainer) return;
 
   resetCatalogState();
-  const flatDiscount = cfg.flatDiscount || 0;
   mainContainer.innerHTML = '';
 
   const activeProducts = products.filter(p => p.isActive !== false);
+  const imagesToWarm = new Set();
 
   const sortedCats = [...categories]
     .filter(c => c.isActive !== false)
@@ -247,15 +178,26 @@ export function buildProductsFromDb(products, categories) {
   let totalProductsCount = 0;
   let catIdx = 0;
 
+  const navMenu = document.getElementById('navCategoriesMenu');
+  const sideMenu = document.getElementById('sideCategoriesMenu');
+  if (navMenu) navMenu.innerHTML = '';
+  if (sideMenu) sideMenu.innerHTML = '';
+
   sortedCats.forEach(cat => {
     const catProducts = catProductMap[cat.id] || [];
     if (catProducts.length === 0) return;
 
     totalProductsCount += catProducts.length;
 
+    const catId = cat.name.toLowerCase().replace(/\s+/g, '-');
+    
+    const navLink = `<a href="#${catId}">${escapeHtml(cat.name)}</a>`;
+    if (navMenu) navMenu.insertAdjacentHTML('beforeend', navLink);
+    if (sideMenu) sideMenu.insertAdjacentHTML('beforeend', navLink);
+
     const header = document.createElement('div');
     header.className = 'section-header';
-    header.id = cat.name.toLowerCase().replace(/\s+/g, '-');
+    header.id = catId;
     if (catIdx > 0) header.style.marginTop = '100px';
     header.innerHTML = `
       <span class="section-badge">${catIdx === 0 ? 'Featured' : 'Collection'}</span>
@@ -310,7 +252,7 @@ export function buildProductsFromDb(products, categories) {
 
       const discountPct = (originalPrice > finalPrice && originalPrice > 0)
         ? Math.round((1 - finalPrice / originalPrice) * 100)
-        : (flatDiscount || 0);
+        : 0;
 
       const variationTag = product.hasVariants ? 'Available in 8" and 16" sizes' : 'Handcrafted Design';
       const safeName = product.name.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '');
@@ -329,6 +271,9 @@ export function buildProductsFromDb(products, categories) {
       `;
 
       const images = product.images && product.images.length > 0 ? product.images : ['images/logo/brand logo.jpeg'];
+      // Warm only the grid-sized thumbnail that the card actually shows (not the full-size original),
+      // and only the primary image — keeps mobile memory low so decoded frames are not evicted on scroll-back.
+      imagesToWarm.add(imageUrlAtWidth(images[0], 400));
       const sliderHTML = productImageHtml(images[0], product.name, nextImageEager());
       const productKey = `db-${product.id}`;
 
@@ -339,7 +284,6 @@ export function buildProductsFromDb(products, categories) {
         images,
         basePrice: finalPrice,
         baseOriginal: originalPrice,
-        flatDiscount,
         currency: cfg.currency,
         tag: cat.name.includes('Craft') ? 'Specialty Craft' : 'Premium Flower',
         variants: (product.hasVariants && product.variants) ? product.variants.filter(v => v.isActive) : null,
@@ -380,6 +324,7 @@ export function buildProductsFromDb(products, categories) {
 
   const statProd = document.getElementById('statProducts');
   if (statProd) statProd.textContent = totalProductsCount + '+';
+  warmCatalogImages([...imagesToWarm]);
 }
 
 export function initCardSlider() {
@@ -394,6 +339,8 @@ export function openProductDetail(productData) {
   const modal = document.getElementById('productDetailModal');
   const cfg = window.catalogConfig;
   if (!modal || !cfg) return;
+
+  logAnalyticsEvent('PRODUCT_VIEW', { productId: productData.id, productName: productData.name });
 
   document.getElementById('pdName').textContent = productData.name;
   document.getElementById('pdTag').textContent = productData.tag || 'Premium Flower';
@@ -518,6 +465,13 @@ export function openProductDetail(productData) {
         addBtn.textContent = 'Add to Cart';
         addBtn.classList.remove('added');
       }, 1800);
+    };
+  }
+
+  const enquireBtn = document.getElementById('pdEnquireWhatsApp');
+  if (enquireBtn) {
+    enquireBtn.onclick = () => {
+      logAnalyticsEvent('ENQUIRY', { productId: productData.id, productName: productData.name, method: 'whatsapp' });
     };
   }
 

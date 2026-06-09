@@ -553,7 +553,7 @@ export function renderCheckoutForm() {
         <div class="radio-group" style="display: flex; flex-direction: column; gap: 10px;">
           <label class="radio-label ${checkoutPayment === 'COD' ? 'active' : ''}" id="labelPaymentCOD">
             <input type="radio" name="paymentMethod" value="COD" ${checkoutPayment === 'COD' ? 'checked' : ''}>
-            <span class="radio-title">💵 Cash on Delivery</span>
+            <span class="radio-title" id="codPaymentTitle">💵 ${checkoutShipping === 'PICKUP' ? 'Cash on Pickup' : 'Cash on Delivery'}</span>
             <span class="radio-desc" id="codPaymentDesc">Surcharge-free (No extra charges)</span>
           </label>
           ${(payConfig?.stripeEnabled && cfg.enableStripePayment !== false) ? `
@@ -683,6 +683,8 @@ export function renderCheckoutForm() {
       pickupLabel.classList.remove('active');
       const addrSec = document.getElementById('checkoutShippingAddressSection');
       if (addrSec) addrSec.style.display = 'block';
+      const codTitle = document.getElementById('codPaymentTitle');
+      if (codTitle) codTitle.innerHTML = '💵 Cash on Delivery';
       const codRow = document.getElementById('labelPaymentCOD');
       if (codRow) {
         codRow.style.display = 'none';
@@ -704,6 +706,8 @@ export function renderCheckoutForm() {
       courierLabel.classList.remove('active');
       const addrSec = document.getElementById('checkoutShippingAddressSection');
       if (addrSec) addrSec.style.display = 'none';
+      const codTitle = document.getElementById('codPaymentTitle');
+      if (codTitle) codTitle.innerHTML = '💵 Cash on Pickup';
       const codRow = document.getElementById('labelPaymentCOD');
       if (codRow) codRow.style.display = '';
       updateCartSummary();
@@ -1136,7 +1140,7 @@ export function renderSuccessScreen() {
         </div>
         <div class="summary-row" style="margin-bottom: 8px;">
           <span>Payment Method:</span>
-          <strong>${window.isFeatureEnabled('AllowPayment') ? (lastOrder.paymentMethod === 'COD' ? 'Cash on Delivery' : (lastOrder.paymentMethod === 'ONLINE' ? 'Stripe Online' : 'Credit Card')) : 'Support Contact'}</strong>
+          <strong>${window.isFeatureEnabled('AllowPayment') ? (lastOrder.paymentMethod === 'COD' ? (lastOrder.shippingMethod === 'PICKUP' ? 'Cash on Pickup' : 'Cash on Delivery') : (lastOrder.paymentMethod === 'ONLINE' ? 'Stripe Online' : 'Credit Card')) : 'Support Contact'}</strong>
         </div>
         <div class="summary-row" style="margin-bottom: 8px;">
           <span>Shipping Address:</span>

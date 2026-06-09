@@ -86,9 +86,23 @@ export function buildNavbar() {
   if (menuToggle && sideMenu && menuOverlay) {
     menuToggle.addEventListener('click', toggleMenu);
     menuOverlay.addEventListener('click', toggleMenu);
-    sideMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', toggleMenu);
+    sideMenu.addEventListener('click', (e) => {
+      if (e.target.tagName === 'A' && !e.target.hasAttribute('data-theme-toggle')) {
+        toggleMenu();
+      }
     });
+
+    const sideCategoriesToggle = document.getElementById('sideCategoriesToggle');
+    const sideCategoriesMenu = document.getElementById('sideCategoriesMenu');
+    if (sideCategoriesToggle && sideCategoriesMenu) {
+      sideCategoriesToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const isHidden = sideCategoriesMenu.style.display === 'none';
+        sideCategoriesMenu.style.display = isHidden ? 'flex' : 'none';
+        sideCategoriesToggle.innerHTML = isHidden ? 'Categories ▴' : 'Categories ▾';
+      });
+    }
   }
 
   function handleScroll() {
